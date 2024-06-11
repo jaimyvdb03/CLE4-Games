@@ -3,6 +3,7 @@ import { Actor, Engine, Vector, DisplayMode } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Player } from './Player.js'
 import { Speedboost } from './Speedboost.js'
+import { Lifeboost } from './Lifeboost.js'
 
 export class Game extends Engine {
 
@@ -22,6 +23,7 @@ export class Game extends Engine {
         this.add(new Player(100, 300));
 
         this.add(new Speedboost (400, 400));
+        this.add(new Lifeboost (600, 400));
     }
 }
 
