@@ -14,13 +14,14 @@ export class Lich extends Enemies {
         this.attackPhase = 0;
         this.attackTimer = null; // Timer to control attack animation phases
         this.attackTimerActive = false;
+        this.isAttacking = false; // Flag to track if currently in attack animation
     }
 
     onInitialize(engine) {
         console.log("initializing");
         this.engine = engine;
         this.pos = new Vector(500, 500); // spawn position
-        this.toggleSprite();
+        this.toggleSprite(); // Set initial sprite
         this.setToRandomPos();
 
         this.timer = new Timer({
@@ -33,15 +34,17 @@ export class Lich extends Enemies {
     }
 
     toggleSprite() {
-        if (this.isFacingRight) {
-            this.graphics.use(Resources.LichRight1.toSprite());
-        } else {
-            this.graphics.use(Resources.LichLeft1.toSprite());
+        console.log("toggleSprite");
+        if (!this.isAttacking) {
+            if (this.isFacingRight) {
+                this.graphics.use(Resources.LichRight1.toSprite());
+            } else {
+                this.graphics.use(Resources.LichLeft1.toSprite());
+            }
         }
     }
 
     setToRandomPos() {
-
         const screenWidth = this.engine.drawWidth;
         const screenHeight = this.engine.drawHeight;
 
@@ -62,6 +65,7 @@ export class Lich extends Enemies {
 
     update(engine, delta) {
         super.update(engine, delta);
+
         // check if lich is at targeted spot
         if (this.pos.distance(this.targetPos) < this.speed * (delta / 1000)) {
             this.vel = new Vector(0, 0); // stop moving
@@ -73,6 +77,7 @@ export class Lich extends Enemies {
     }
 
     facePlayer() {
+        console.log("faceplayer");
         const playerPos = this.player.pos;
         const directionToPlayer = playerPos.sub(this.pos).normalize();
 
@@ -83,39 +88,40 @@ export class Lich extends Enemies {
     startAttackAnimation() {
         if (!this.attackTimerActive) {
             this.attackPhase = 0;
+            this.isAttacking = true;
 
             this.attackTimer = new Timer({
-                interval: 2000,
+                interval: 1000,
                 repeats: true,
                 fcn: () => {
                     this.attackPhase = (this.attackPhase + 1) % 5;
                     console.log(this.attackPhase);
 
-                    //if (this.isFacingRight) {
-                    if (this.attackPhase === 0) {
-                        this.graphics.use(Resources.LichRight1.toSprite());
-                    } else if (this.attackPhase === 1) {
-                        this.graphics.use(Resources.LichRight2.toSprite());
-                    } else if (this.attackPhase === 2) {
-                        this.graphics.use(Resources.LichRight3.toSprite());
-                    } else if (this.attackPhase === 3) {
-                        this.graphics.use(Resources.LichRight4.toSprite());
-                    } else if (this.attackPhase === 4) {
-                        this.graphics.use(Resources.LichRight5.toSprite());
+                    if (this.isFacingRight) {
+                        if (this.attackPhase === 0) {
+                            this.graphics.use(Resources.LichRight1.toSprite());
+                        } else if (this.attackPhase === 1) {
+                            this.graphics.use(Resources.LichRight2.toSprite());
+                        } else if (this.attackPhase === 2) {
+                            this.graphics.use(Resources.LichRight3.toSprite());
+                        } else if (this.attackPhase === 3) {
+                            this.graphics.use(Resources.LichRight4.toSprite());
+                        } else if (this.attackPhase === 4) {
+                            this.graphics.use(Resources.LichRight5.toSprite());
+                        }
+                    } else {
+                        if (this.attackPhase === 0) {
+                            this.graphics.use(Resources.LichLeft1.toSprite());
+                        } else if (this.attackPhase === 1) {
+                            this.graphics.use(Resources.LichLeft2.toSprite());
+                        } else if (this.attackPhase === 2) {
+                            this.graphics.use(Resources.LichLeft3.toSprite());
+                        } else if (this.attackPhase === 3) {
+                            this.graphics.use(Resources.LichLeft4.toSprite());
+                        } else if (this.attackPhase === 4) {
+                            this.graphics.use(Resources.LichLeft5.toSprite());
+                        }
                     }
-                    // } else {
-                    //     if (this.attackPhase === 0) {
-                    //         this.graphics.use(Resources.LichLeft1.toSprite());
-                    //     } else if (this.attackPhase === 1) {
-                    //         this.graphics.use(Resources.LichLeft2.toSprite());
-                    //     } else if (this.attackPhase === 2) {
-                    //         this.graphics.use(Resources.LichLeft3.toSprite());
-                    //     } else if (this.attackPhase === 3) {
-                    //         this.graphics.use(Resources.LichLeft4.toSprite());
-                    //     } else if (this.attackPhase === 4) {
-                    //         this.graphics.use(Resources.LichLeft5.toSprite());
-                    //     }
-                    // }
                 }
             });
 
@@ -124,5 +130,4 @@ export class Lich extends Enemies {
             this.attackTimerActive = true;
         }
     }
-
 }
