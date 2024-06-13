@@ -1,7 +1,6 @@
 import { ImageSource, Sound, Resource, Loader } from 'excalibur'
 
 const Resources = {
-    Fish: new ImageSource('images/fish.png'),
     Player: new ImageSource('images/test-player.png'),
     CockroachLeft1: new ImageSource('images/roach-left-1.png'),
     CockroachLeft2: new ImageSource('images/roach-left-2.png'),
@@ -19,12 +18,9 @@ const Resources = {
     LichRight3: new ImageSource('images/lich-right-3.png'),
     LichRight4: new ImageSource('images/lich-right-4.png'),
     LichRight5: new ImageSource('images/lich-right-5.png'),
-
-
-
+    LichProjectile: new ImageSource('images/lich-projectile.png')
 }
 const ResourceLoader = new Loader([
-    Resources.Fish,
     Resources.Player,
     Resources.CockroachLeft1,
     Resources.CockroachLeft2,
@@ -42,7 +38,7 @@ const ResourceLoader = new Loader([
     Resources.LichRight3,
     Resources.LichRight4,
     Resources.LichRight5,
-
+    Resources.LichProjectile
 ])
 
 export { Resources, ResourceLoader }

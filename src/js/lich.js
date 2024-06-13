@@ -1,5 +1,6 @@
 import { Actor, Engine, Vector, CollisionType, Timer } from "excalibur";
 import { Resources } from './resources.js';
+import { LichProjectile } from "./lich-projectile.js";
 import { Enemies } from "./enemies.js";
 
 export class Lich extends Enemies {
@@ -34,7 +35,6 @@ export class Lich extends Enemies {
     }
 
     toggleSprite() {
-        console.log("toggleSprite");
         if (!this.isAttacking) {
             if (this.isFacingRight) {
                 this.graphics.use(Resources.LichRight1.toSprite());
@@ -56,10 +56,8 @@ export class Lich extends Enemies {
 
         // calculate the direction vector towards the target position
         const direction = this.targetPos.sub(this.pos).normalize();
-
         // velocity towards target position
         this.vel = direction.scale(this.speed);
-
         this.isFacingRight = this.vel.x >= 0;
     }
 
@@ -77,7 +75,6 @@ export class Lich extends Enemies {
     }
 
     facePlayer() {
-        console.log("faceplayer");
         const playerPos = this.player.pos;
         const directionToPlayer = playerPos.sub(this.pos).normalize();
 
@@ -91,11 +88,17 @@ export class Lich extends Enemies {
             this.isAttacking = true;
 
             this.attackTimer = new Timer({
-                interval: 1000,
+                interval: 800,
                 repeats: true,
                 fcn: () => {
                     this.attackPhase = (this.attackPhase + 1) % 5;
                     console.log(this.attackPhase);
+
+                    if (this.attackPhase === 0) {
+                        // Create and launch a projectile towards the player
+                        const projectile = new LichProjectile(this.pos, this.player.pos);
+                        this.engine.add(projectile);
+                    }
 
                     if (this.isFacingRight) {
                         if (this.attackPhase === 0) {
