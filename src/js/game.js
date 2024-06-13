@@ -25,15 +25,15 @@ export class Game extends Engine {
         this.add(player);
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
-
-        let roach = new Cockroach();
-        this.add(roach);
-
-        let reaper = new Reaper();
-        this.add(reaper);
-
         let lich = new Lich(player);
         this.add(lich);
+
+        let roach = new Cockroach(player);
+        this.add(roach);
+
+        let reaper = new Reaper(player);
+        this.add(reaper);
+
     }
 }
 

@@ -1,36 +1,35 @@
-import { Actor, Engine, Vector, CollisionType, Timer } from "excalibur";
+import { Actor, CollisionType, Vector, Timer } from "excalibur";
 import { Resources } from './resources.js';
-import { Enemies } from "./enemies.js";
 
-export class Cockroach extends Enemies {
-    constructor() {
+export class Cockroach extends Actor {
+    constructor(player) {
         super({
             width: Resources.CockroachRight1.width,
             height: Resources.CockroachRight1.height
         });
+
+        this.player = player;
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.vel = new Vector(0, 0);
-        this.timeSinceLastChange = 0;
         this.isRoach1 = true;
         this.isFacingRight = true;
-        this.speed = 80; // Set the fixed speed
+        this.speed = 65; // Set the fixed speed
+        this.timeSinceLastChange = 0;
     }
 
     onInitialize(engine) {
-        console.log("intializing")
+        this.engine = engine;  // Store the engine instance
         this.pos.x = 500;
         this.pos.y = 500;
-        this.engine = engine;  // Store the engine instance
         this.graphics.use(Resources.CockroachRight1.toSprite());
-        this.setRandomDirection();
 
         this.timer = new Timer({
-            interval: 500,
+            interval: 100,
             repeats: true,
             fcn: () => this.toggleSprite()
         });
         engine.add(this.timer);
-
+        console.log()
         this.timer.start();
     }
 
@@ -52,21 +51,19 @@ export class Cockroach extends Enemies {
         }
     }
 
-    setRandomDirection() {
-        const angle = Math.random() * Math.PI * 2; // Random direction
-        this.vel = new Vector(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
-
-        // Check the direction and update the facing direction
-        this.isFacingRight = this.vel.x >= 0;
-    }
-
     update(engine, delta) {
         super.update(engine, delta);
-        this.timeSinceLastChange += delta;
-        if (this.timeSinceLastChange >= 2000) {
-            this.setRandomDirection();
-            this.timeSinceLastChange = 0;
-        }
+
+        // Calculate direction towards the player
+        const directionToPlayer = this.player.pos.sub(this.pos).normalize();
+
+        // Set velocity towards player
+        this.vel = directionToPlayer.scale(this.speed);
+
+        // Update position based on velocity
         this.pos = this.pos.add(this.vel.scale(delta / 1000));
+
+        // Update facing direction based on velocity
+        this.isFacingRight = this.vel.x >= 0;
     }
 }

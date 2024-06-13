@@ -9,21 +9,18 @@ export class Lich extends Enemies {
         this.player = player;
         this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
-        this.targetPos = new Vector(100, 100);
         this.isFacingRight = true;
         this.speed = 80;
         this.attackPhase = 0;
-        this.attackTimer = null; // Timer to control attack animation phases
+        this.attackTimer = null;
         this.attackTimerActive = false;
-        this.isAttacking = false; // Flag to track if currently in attack animation
+        this.isAttacking = false;
     }
 
     onInitialize(engine) {
-        console.log("initializing");
         this.engine = engine;
         this.pos = new Vector(500, 500); // spawn position
-        this.toggleSprite(); // Set initial sprite
-        this.setToRandomPos();
+        this.toggleSprite();
 
         this.timer = new Timer({
             interval: 500,
@@ -44,32 +41,24 @@ export class Lich extends Enemies {
         }
     }
 
-    setToRandomPos() {
-        const screenWidth = this.engine.drawWidth;
-        const screenHeight = this.engine.drawHeight;
-
-        // random target position
-        this.targetPos = new Vector(
-            Math.random() * (screenWidth - this.width) + this.width / 2,
-            Math.random() * (screenHeight - this.height) + this.height / 2
-        );
-
-        // calculate the direction vector towards the target position
-        const direction = this.targetPos.sub(this.pos).normalize();
-        // velocity towards target position
-        this.vel = direction.scale(this.speed);
-        this.isFacingRight = this.vel.x >= 0;
-    }
-
     update(engine, delta) {
         super.update(engine, delta);
 
-        // check if lich is at targeted spot
-        if (this.pos.distance(this.targetPos) < this.speed * (delta / 1000)) {
-            this.vel = new Vector(0, 0); // stop moving
+        // Calculate direction vector towards the player position
+        const directionToPlayer = this.player.pos.sub(this.pos).normalize();
+
+        // Set velocity towards player position
+        this.vel = directionToPlayer.scale(this.speed);
+
+        // Check distance to player
+        const distanceToPlayer = this.pos.distance(this.player.pos);
+
+        if (distanceToPlayer <= 650) {
+            this.vel = new Vector(0, 0); // Stop moving if close to player
             this.facePlayer();
             this.startAttackAnimation();
         } else {
+            // Move towards player
             this.pos = this.pos.add(this.vel.scale(delta / 1000));
         }
     }
@@ -92,7 +81,6 @@ export class Lich extends Enemies {
                 repeats: true,
                 fcn: () => {
                     this.attackPhase = (this.attackPhase + 1) % 5;
-                    console.log(this.attackPhase);
 
                     if (this.attackPhase === 0) {
                         // Create and launch a projectile towards the player
