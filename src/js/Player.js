@@ -49,10 +49,27 @@ export class Player extends Actor {
         }
 
         this.vel = new Vector(xspeed, yspeed);
+
+        if (xspeed > 0 || xspeed < 0) {
+            this.turnWeapon(xspeed)
+        }
     }
 
     armPlayer() {
         const weapon = new ThrowingAxe()
+        this.weapon = weapon
         this.addChild(weapon)
     }
+
+    turnWeapon(xspeed) {
+        if (xspeed > 0) {
+            this.weapon.scale.x = 1
+            this.weapon.pos.x = 30
+        }
+        if (xspeed <0) {
+            this.weapon.scale.x = -1
+            this.weapon.pos.x = -30
+        }
+    }
 }
+
