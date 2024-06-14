@@ -1,7 +1,13 @@
 import { ImageSource, Sound, Resource, Loader } from 'excalibur'
 
 const Resources = {
-    Player: new ImageSource('images/test-player.png'),
+
+    
+    Player: new ImageSource('images/player.png'),
+    Speedboost: new ImageSource('images/speedboost.png'),
+    Lifeboost: new ImageSource('images/lifeboost.png'),
+    Life: new ImageSource('images/life.png'),
+
     CockroachLeft1: new ImageSource('images/roach-left-1.png'),
     CockroachLeft2: new ImageSource('images/roach-left-2.png'),
     CockroachRight1: new ImageSource('images/roach-right-1.png'),
@@ -26,9 +32,14 @@ const Resources = {
     Arrow: new ImageSource('images/arrow.png'),
     StaffProjectile: new ImageSource('images/staffProjectile.png'),
     SpellbookProjectile: new ImageSource('images/magicTomeProjectile.png')
+
 }
 const ResourceLoader = new Loader([
     Resources.Player,
+    Resources.Speedboost,
+    Resources.Lifeboost,
+    Resources.Life,
+
     Resources.CockroachLeft1,
     Resources.CockroachLeft2,
     Resources.CockroachRight1,
