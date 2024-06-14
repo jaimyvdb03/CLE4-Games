@@ -1,4 +1,4 @@
-import { Actor, Engine, Vector, Keys, CollisionType } from "excalibur";
+import { Actor, Vector, Keys, CollisionType } from "excalibur";
 import { Resources } from './resources.js';
 
 export class Player extends Actor {
@@ -6,6 +6,12 @@ export class Player extends Actor {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.speedMultiplier = 1; // Default speed multiplier
+        this._lifes = 4; // Initialize lifes from constructor parameter
+    }
+
+    // Getter for lifes
+    get lifes() {
+        return this._lifes;
     }
 
     onInitialize(engine) {
@@ -21,7 +27,7 @@ export class Player extends Actor {
             // Activate the speed boost
             console.log('picked up speedboost');
             evt.other.kill();
-            this.speedMultiplier = 2; // Increase speed by 5 times
+            this.speedMultiplier = 2; // Increase speed by 2 times (not 5 times as originally stated)
             this.speedBoostTimer = 10 * 1000; // 10 seconds
             this.speedBoostActive = true;
         }
@@ -56,7 +62,6 @@ export class Player extends Actor {
         // Left
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
-            this.graphics.flipHorizontal
             this.graphics.flipHorizontal = false;
         }
 
