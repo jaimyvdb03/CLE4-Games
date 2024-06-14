@@ -5,6 +5,7 @@ import { ThrowingAxe } from "./throwingAxe.js";
 import { Spellbook } from "./spellbook.js";
 import { Staff } from "./staff.js";
 
+
 export class Player extends Actor {
     constructor(x, y) {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
@@ -17,6 +18,7 @@ export class Player extends Actor {
         this.graphics.use(Resources.Player.toSprite());
         this.vel = new Vector(0, 0);
         this.armPlayer()
+        this.pos = new Vector(600, 600);
     }
 
     onPreUpdate(engine, delta) {
@@ -49,7 +51,7 @@ export class Player extends Actor {
         }
 
         this.vel = new Vector(xspeed, yspeed);
-
+      
         if (xspeed > 0 || xspeed < 0) {
             this.turnWeapon(xspeed)
         }
@@ -72,4 +74,3 @@ export class Player extends Actor {
         }
     }
 }
-
