@@ -20,15 +20,14 @@ export class Game extends Engine {
     startGame() {
         console.log("start de game!");
 
-        // Create instances of Player, Speedboost, Lifeboost
         const player = new Player(100, 300);
         this.add(player);
         this.add(new Speedboost(400, 400));
         this.add(new Lifeboost(600, 400));
+        this.add(new Lifeboost(630, 400));
+        this.add(new Lifeboost(660, 400));
 
-        // Add Life instances only at the desired location (75, 50)
-        const life = new Life(75, 50, player);
-        this.add(life);
+        this.add(new Life(75, 50, player));
     }
 }
 
