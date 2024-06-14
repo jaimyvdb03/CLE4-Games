@@ -4,24 +4,23 @@ import { Resources } from './resources.js';
 export class Reaper extends Actor {
     constructor(player) {
         super({
-            width: Resources.ReaperRight.width,
+            width: Resources.ReaperRight.width / 2,
             height: Resources.ReaperRight.height
         });
 
         this.player = player;
-        this.body.collisionType = CollisionType.Active; // Active collision type
+        this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
         this.isFacingRight = true;
-        this.speed = 50; // Set the fixed speed
+        this.speed = 50; // vaste snelheid
         this.timeSinceLastChange = 0;
     }
 
     onInitialize(engine) {
-        this.engine = engine;  // Store the engine instance
+        this.engine = engine;
         this.pos.x = 500;
         this.pos.y = 500;
-        this.graphics.use(Resources.ReaperRight.toSprite());
-
+        this.toggleSprite()
         this.timer = new Timer({
             interval: 500,
             repeats: true,
@@ -42,18 +41,15 @@ export class Reaper extends Actor {
     update(engine, delta) {
         super.update(engine, delta);
 
-        // Calculate direction towards the player
+        // calculate de direction naar de player
         const directionToPlayer = this.player.pos.sub(this.pos).normalize();
 
-        // Set velocity towards player
+        // velocity naar de player
         this.vel = directionToPlayer.scale(this.speed);
 
-        // Update position based on velocity
+        // Update eigen positie op bases van velocity
         this.pos = this.pos.add(this.vel.scale(delta / 1000));
 
-        // Update facing direction based on velocity
         this.isFacingRight = this.vel.x >= 0;
-
-        // Toggle sprite
     }
 }

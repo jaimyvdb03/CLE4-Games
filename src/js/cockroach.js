@@ -5,20 +5,20 @@ export class Cockroach extends Actor {
     constructor(player) {
         super({
             width: Resources.CockroachRight1.width,
-            height: Resources.CockroachRight1.height
+            height: Resources.CockroachRight1.height / 2
         });
 
         this.player = player;
-        this.body.collisionType = CollisionType.Active; // Active collision type
+        this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
         this.isRoach1 = true;
         this.isFacingRight = true;
-        this.speed = 65; // Set the fixed speed
+        this.speed = 65; //standaard snelheid
         this.timeSinceLastChange = 0;
     }
 
     onInitialize(engine) {
-        this.engine = engine;  // Store the engine instance
+        this.engine = engine;
         this.pos.x = 500;
         this.pos.y = 500;
         this.graphics.use(Resources.CockroachRight1.toSprite());
@@ -54,16 +54,15 @@ export class Cockroach extends Actor {
     update(engine, delta) {
         super.update(engine, delta);
 
-        // Calculate direction towards the player
+        // calculate de direction naar de player
         const directionToPlayer = this.player.pos.sub(this.pos).normalize();
 
-        // Set velocity towards player
+        // velocity naar de player
         this.vel = directionToPlayer.scale(this.speed);
 
-        // Update position based on velocity
+        // Update eigen positie op bases van velocity
         this.pos = this.pos.add(this.vel.scale(delta / 1000));
 
-        // Update facing direction based on velocity
         this.isFacingRight = this.vel.x >= 0;
     }
 }

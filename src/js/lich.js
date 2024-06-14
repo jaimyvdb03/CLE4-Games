@@ -5,7 +5,7 @@ import { Enemies } from "./enemies.js";
 
 export class Lich extends Enemies {
     constructor(player) {
-        super(Resources.LichRight1.width, Resources.LichRight1.height);
+        super(Resources.LichRight1.width / 1.5, Resources.LichRight1.height / 1.2);
         this.player = player;
         this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
@@ -44,21 +44,21 @@ export class Lich extends Enemies {
     update(engine, delta) {
         super.update(engine, delta);
 
-        // Calculate direction vector towards the player position
+        // calculate de direction naar de player
         const directionToPlayer = this.player.pos.sub(this.pos).normalize();
 
-        // Set velocity towards player position
+        // velocity naar de player
         this.vel = directionToPlayer.scale(this.speed);
 
-        // Check distance to player
+        // check hoe ver de player is
         const distanceToPlayer = this.pos.distance(this.player.pos);
 
         if (distanceToPlayer <= 650) {
-            this.vel = new Vector(0, 0); // Stop moving if close to player
+            this.vel = new Vector(0, 0); // stop met bewegen
             this.facePlayer();
             this.startAttackAnimation();
         } else {
-            // Move towards player
+            // ga richting de player pos
             this.pos = this.pos.add(this.vel.scale(delta / 1000));
         }
     }
@@ -83,7 +83,6 @@ export class Lich extends Enemies {
                     this.attackPhase = (this.attackPhase + 1) % 5;
 
                     if (this.attackPhase === 0) {
-                        // Create and launch a projectile towards the player
                         const projectile = new LichProjectile(this.pos, this.player.pos);
                         this.engine.add(projectile);
                     }
