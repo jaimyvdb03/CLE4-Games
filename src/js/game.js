@@ -33,7 +33,6 @@ export class Game extends Engine {
 
         let reaper = new Reaper(player);
         this.add(reaper);
-
     }
 }
 

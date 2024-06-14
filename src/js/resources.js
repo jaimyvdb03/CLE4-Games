@@ -18,7 +18,14 @@ const Resources = {
     LichRight3: new ImageSource('images/lich-right-3.png'),
     LichRight4: new ImageSource('images/lich-right-4.png'),
     LichRight5: new ImageSource('images/lich-right-5.png'),
-    LichProjectile: new ImageSource('images/lich-projectile.png')
+    LichProjectile: new ImageSource('images/lich-projectile.png'),
+    Bow: new ImageSource('images/bow.png'),
+    Spellbook: new ImageSource('images/spellbook.png'),
+    Staff: new ImageSource('images/staff.png'),
+    ThrowingAxe: new ImageSource('images/throwingAxe.png'),
+    Arrow: new ImageSource('images/arrow.png'),
+    StaffProjectile: new ImageSource('images/staffProjectile.png'),
+    SpellbookProjectile: new ImageSource('images/magicTomeProjectile.png')
 }
 const ResourceLoader = new Loader([
     Resources.Player,
@@ -38,7 +45,14 @@ const ResourceLoader = new Loader([
     Resources.LichRight3,
     Resources.LichRight4,
     Resources.LichRight5,
-    Resources.LichProjectile
+    Resources.LichProjectile,
+    Resources.Bow,
+    Resources.Spellbook,
+    Resources.Staff,
+    Resources.ThrowingAxe,
+    Resources.Arrow,
+    Resources.StaffProjectile,
+    Resources.SpellbookProjectile
 ])
 
 export { Resources, ResourceLoader }

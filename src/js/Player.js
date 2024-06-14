@@ -1,5 +1,10 @@
 import { Actor, Engine, Vector, Keys, CollisionType, DegreeOfFreedom } from "excalibur";
 import { Resources } from './resources.js';
+import { Bow } from "./bow.js";
+import { ThrowingAxe } from "./throwingAxe.js";
+import { Spellbook } from "./spellbook.js";
+import { Staff } from "./staff.js";
+
 
 export class Player extends Actor {
     constructor(x, y) {
@@ -12,6 +17,7 @@ export class Player extends Actor {
         this.body.useGravity = true;
         this.graphics.use(Resources.Player.toSprite());
         this.vel = new Vector(0, 0);
+        this.armPlayer()
         this.pos = new Vector(600, 600);
     }
 
@@ -45,5 +51,26 @@ export class Player extends Actor {
         }
 
         this.vel = new Vector(xspeed, yspeed);
+      
+        if (xspeed > 0 || xspeed < 0) {
+            this.turnWeapon(xspeed)
+        }
+    }
+
+    armPlayer() {
+        const weapon = new ThrowingAxe()
+        this.weapon = weapon
+        this.addChild(weapon)
+    }
+
+    turnWeapon(xspeed) {
+        if (xspeed > 0) {
+            this.weapon.scale.x = 1
+            this.weapon.pos.x = 30
+        }
+        if (xspeed <0) {
+            this.weapon.scale.x = -1
+            this.weapon.pos.x = -30
+        }
     }
 }
