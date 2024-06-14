@@ -3,16 +3,22 @@ import { Actor, Engine, Vector, DisplayMode } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Background } from './background.js'
 import { Player } from './Player.js'
+import { Bush } from './map-objects/bush.js'
+import { Fence } from './map-objects/fence.js'
+import { Bollard } from './map-objects/bollard.js'
+import { Playground } from './map-objects/playground.js'
+import { Hotel } from './hotel.js'
+
 
 export class Game extends Engine {
 
     constructor() {
-        super({ 
-            width: 1280,
+        super({
+            width: 2560,
             height: 720,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen
-         })
+        })
         this.start(ResourceLoader).then(() => this.startGame())
     }
 
@@ -22,8 +28,36 @@ export class Game extends Engine {
         //adding background
         const background1 = new Background;
         this.add(background1);
-        
-        let player = new Player(100, 300);
+
+        //adding bushes
+        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)) //x,y,width,height,image,anchor
+        this.add(bush1);
+        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)) //x,y,width,height,image,anchor
+        this.add(bush2);
+        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)) //x,y,width,height,image,anchor
+        this.add(bush3);
+
+        //adding fence
+        const fence = new Fence()
+        this.add(fence);
+
+        //adding bollards
+        const Bollard1 = new Bollard(105, 90, Resources.Bollard1) //x,y,image
+        this.add(Bollard1);
+        const Bollard2 = new Bollard(115, 260, Resources.Bollard2) //x,y,height,image
+        this.add(Bollard2);
+        const Bollard3 = new Bollard(115, 470, Resources.Bollard3) //x,y,height,image
+        this.add(Bollard3);
+
+        //adding playground
+        const playground = new Playground()
+        this.add(playground);
+
+        //adding hotel
+        const hotel = new Hotel()
+        this.add(hotel);
+
+        let player = new Player(1350, 300);
         this.add(player);
         this.camera.zoom = 1.1;
         this.camera.strategy.lockToActor(player);

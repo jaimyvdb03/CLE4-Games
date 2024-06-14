@@ -1,19 +1,19 @@
 import { Actor, Vector, CollisionType, } from "excalibur"
 
-export class Bush extends Actor {
+export class Bollard extends Actor {
 
-    constructor(x, y, witdth, height, image) {
+    constructor(x, y, image) {
         super({
+            pos: new Vector(x, y),
             width: image.width,
             height: image.height,
-            anchor: Vector.Zero,
-            pos: new Vector(x, y)
+            anchor: new Vector(0.5, 1)
         })
         this.image = image;
     }
 
     onInitialize(engine) {
         this.graphics.use(this.image.toSprite())
-        this.body.collisionType = CollisionType.Passive;
+        this.body.collisionType = CollisionType.Fixed
     }
 }
