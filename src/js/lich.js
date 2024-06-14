@@ -23,7 +23,7 @@ export class Lich extends Enemies {
         ])
         this.collider.set(capsule)
         this.engine = engine;
-        this.pos = new Vector(500, 500); // spawn position
+        this.pos = new Vector(1350, 100); // spawn position
         this.toggleSprite();
 
         this.timer = new Timer({
