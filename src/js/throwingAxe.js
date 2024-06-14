@@ -5,6 +5,7 @@ import { WeaponProjectile } from "./weaponProjectile"
 export class ThrowingAxe extends Actor {
     constructor(x,y) {
         super({x,y, width: Resources.ThrowingAxe.width, height: Resources.ThrowingAxe.height })
+        this.direction = 1
     }
 
     onInitialize(engine) {
@@ -16,10 +17,15 @@ export class ThrowingAxe extends Actor {
 
     onPreUpdate(engine) {
         if (engine.input.keyboard.wasPressed(Keys.Space)) {
+            if (this.direction === 1) {
+                this.scaleX = 0.15
+            } else {
+                this.scaleX = -0.15
+            }
             const projectile = new WeaponProjectile(
                 // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                this.parent.pos.x, this.parent.pos.y, Resources.ThrowingAxe, 0.15, 0.15, 500, 0, 20)
+                this.parent.pos.x, this.parent.pos.y, Resources.ThrowingAxe, 0.15, 0.15, 500, 0, 20, this.direction)
             engine.add(projectile)
         }
-    }   
+    }
 }
