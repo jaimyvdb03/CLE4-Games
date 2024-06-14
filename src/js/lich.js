@@ -18,6 +18,10 @@ export class Lich extends Enemies {
     }
 
     onInitialize(engine) {
+        let capsule = new CompositeCollider([
+            Shape.Box(60, 100, new Vector(0.48, 0.35)),
+        ])
+        this.collider.set(capsule)
         this.engine = engine;
         this.pos = new Vector(500, 500); // spawn position
         this.toggleSprite();
@@ -35,16 +39,8 @@ export class Lich extends Enemies {
         if (!this.isAttacking) {
             if (this.isFacingRight) {
                 this.graphics.use(Resources.LichRight1.toSprite());
-                let capsule = new CompositeCollider([
-                    Shape.Box(85, 100, new Vector(0.42, 0.35)),
-                ])
-                this.collider.set(capsule)
             } else {
                 this.graphics.use(Resources.LichLeft1.toSprite());
-                let capsule = new CompositeCollider([
-                    Shape.Box(85, 100, new Vector(0.6, 0.35)),
-                ])
-                this.collider.set(capsule)
             }
         }
     }
