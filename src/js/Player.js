@@ -46,15 +46,13 @@ export class Player extends Actor {
             evt.other.kill();
             this._lifes += 1;
             console.log(this._lifes)
-        } else if (evt.other instanceof Enemies) {
-            console.log('Collided with an enemy');
-            this.kill();
-        } else if (evt.other instanceof LichProjectile) {
-            console.log('Collided with an projectile');
-            this.kill();
+        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
+            this._lifes -= 1;
+            if (this._lifes <= 0) {
+                console.log('Collided with an enemy');
+                this.kill();
+            }
         }
-
-
     }
 
     onPreUpdate(engine, delta) {

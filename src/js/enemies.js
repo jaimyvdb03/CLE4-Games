@@ -7,7 +7,6 @@ export class Enemies extends Actor {
             width: width,
             height: height
         });
-        console.log("enemy constructor")
     }
 
     onInitialize(engine) {
