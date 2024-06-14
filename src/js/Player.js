@@ -7,6 +7,7 @@ export class Player extends Actor {
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.speedMultiplier = 1; // Default speed multiplier
         this._lifes = 4; // Initialize lifes from constructor parameter
+        console.log(this._lifes)
     }
 
     // Getter for lifes
@@ -30,6 +31,11 @@ export class Player extends Actor {
             this.speedMultiplier = 2; // Increase speed by 2 times (not 5 times as originally stated)
             this.speedBoostTimer = 10 * 1000; // 10 seconds
             this.speedBoostActive = true;
+        } else if(evt.other.name === 'lifeboost') {
+            console.log('picked up lifeboost');
+            evt.other.kill();
+            this._lifes += 1;   
+            console.log(this._lifes)        
         }
     }
 
