@@ -12,6 +12,7 @@ export class Player extends Actor {
         this.body.useGravity = true;
         this.graphics.use(Resources.Player.toSprite());
         this.vel = new Vector(0, 0);
+        this.pos = new Vector(600, 600);
     }
 
     onPreUpdate(engine, delta) {

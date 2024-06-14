@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Vector, Timer } from "excalibur";
+import { Actor, CollisionType, Vector, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
 
 export class Reaper extends Actor {
@@ -17,6 +17,11 @@ export class Reaper extends Actor {
     }
 
     onInitialize(engine) {
+        let capsule = new CompositeCollider([
+            Shape.Box(65, 115, new Vector(0.5, 0.45)),
+        ])
+        this.collider.set(capsule)
+
         this.engine = engine;
         this.pos.x = 500;
         this.pos.y = 500;

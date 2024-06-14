@@ -1,4 +1,4 @@
-import { Actor, Engine, Vector, CollisionType, Timer } from "excalibur";
+import { Actor, Engine, Vector, CollisionType, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
 import { LichProjectile } from "./lich-projectile.js";
 import { Enemies } from "./enemies.js";
@@ -35,11 +35,20 @@ export class Lich extends Enemies {
         if (!this.isAttacking) {
             if (this.isFacingRight) {
                 this.graphics.use(Resources.LichRight1.toSprite());
+                let capsule = new CompositeCollider([
+                    Shape.Box(85, 100, new Vector(0.42, 0.35)),
+                ])
+                this.collider.set(capsule)
             } else {
                 this.graphics.use(Resources.LichLeft1.toSprite());
+                let capsule = new CompositeCollider([
+                    Shape.Box(85, 100, new Vector(0.6, 0.35)),
+                ])
+                this.collider.set(capsule)
             }
         }
     }
+
 
     update(engine, delta) {
         super.update(engine, delta);

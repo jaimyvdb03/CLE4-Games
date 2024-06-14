@@ -6,8 +6,8 @@ export class LichProjectile extends Actor {
         super({
             x: startPosition.x,
             y: startPosition.y,
-            width: Resources.LichProjectile.width / 2, // Half the width
-            height: Resources.LichProjectile.height / 2, // Half the height
+            width: Resources.LichProjectile.width / 4, // Half the width
+            height: Resources.LichProjectile.height / 4, // Half the height
         });
 
         this.collisionType = CollisionType.Passive; // Passive collision type
