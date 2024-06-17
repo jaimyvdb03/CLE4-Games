@@ -33,7 +33,7 @@ export class WeaponProjectile extends Actor {
             event.other.kill();
             this.kill();
             engine.addPoints(20);
-            // engine.onEnemyKilled();
+            engine.currentScene.onEnemyKilled();
         }
 
         if (event.other instanceof Lich) {

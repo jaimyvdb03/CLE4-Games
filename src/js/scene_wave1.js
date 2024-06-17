@@ -77,7 +77,9 @@ export class Wave1 extends Scene {
         let reaper = new Reaper(this.player);
         this.add(reaper);
 
-        this.add(new Life(75, 50, this.player));
+        this.lifeDisplay = new Life(this.player);
+        this.add(this.lifeDisplay);
+
         this.startWave()
 
     }
