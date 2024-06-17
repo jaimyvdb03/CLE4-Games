@@ -14,6 +14,7 @@ import { Lich } from './lich.js'
 import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
+import {ScoreLabel} from "./scoreLabel.js";
 
 
 export class Game extends Engine {
@@ -26,11 +27,7 @@ export class Game extends Engine {
         })
         this.start(ResourceLoader).then(() => this.startGame())
         this.points = 0
-    }
-
-    addPoints(addedPoints) {
-        this.points += addedPoints
-        console.log(`${this.points} punten!`)
+        this.scoreLabel = null
     }
 
     startGame() {
@@ -67,12 +64,12 @@ export class Game extends Engine {
         //adding hotel
         const hotel = new Hotel()
         this.add(hotel);
-      
+
       this.add(new Speedboost(400, 400));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
-      
+
         let player = new Player(1350, 300);
         this.add(player);
 
@@ -87,10 +84,20 @@ export class Game extends Engine {
         let reaper = new Reaper(player);
         this.add(reaper);
 
-        
         this.add(new Life(75, 50, player));
 
+        this.scoreLabel = new ScoreLabel(50, 75)
+        this.add(this.scoreLabel)
+    }
+
+    addPoints(addedPoints) {
+        this.points += addedPoints
+        if (this.scoreLabel) {
+            this.scoreLabel.changeText(this.points)
+        }
     }
 }
+
+
 
 new Game();
