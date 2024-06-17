@@ -21,14 +21,14 @@ export class Game extends Engine {
         console.log(`${this.points} punten!`)
     }
 
-    // waitForGamepad() {
-    //     console.log("Waiting for gamepad connection...");
+    waitForGamepad() {
+        console.log("Waiting for gamepad connection...");
 
-    //     window.addEventListener('gamepadconnected', (event) => {
-    //         console.log('Gamepad connected:', event.gamepad);
-    //         this.startGame(event.gamepad);
-    //     });
-    // }
+        window.addEventListener('gamepadconnected', (event) => {
+            console.log('Gamepad connected:', event.gamepad);
+            this.startGame(event.gamepad);
+        });
+    }
 
     startGame() {
         console.log("Start de game!");
