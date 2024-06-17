@@ -19,7 +19,7 @@ export class Lich extends Enemies {
 
     onInitialize(engine) {
         this.engine = engine;
-        this.pos = new Vector(500, 500); // spawn position
+        this.pos = new Vector(2100, 400); // spawn position
         this.toggleSprite();
 
         this.timer = new Timer({

@@ -23,8 +23,8 @@ export class Reaper extends Actor {
         this.collider.set(capsule)
 
         this.engine = engine;
-        this.pos.x = 500;
-        this.pos.y = 500;
+        this.pos.x = 2000;
+        this.pos.y = 450;
         this.toggleSprite()
         this.timer = new Timer({
             interval: 500,

@@ -23,8 +23,9 @@ export class ThrowingAxe extends Actor {
                 this.scaleX = -0.15
             }
             const projectile = new WeaponProjectile(
-                // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                this.parent.pos.x, this.parent.pos.y, Resources.ThrowingAxe, 0.15, 0.15, 500, 0, 20, this.direction)
+                // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel, Direction, Width, Height
+                this.parent.pos.x, this.parent.pos.y, Resources.ThrowingAxe, 0.15, 0.15, 500, 0, 20, this.direction,
+                Resources.ThrowingAxe.width / 15, Resources.ThrowingAxe.height /15)
             engine.add(projectile)
         }
     }

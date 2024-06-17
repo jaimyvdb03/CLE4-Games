@@ -24,7 +24,8 @@ export class Staff extends Actor {
             }
             const projectile = new WeaponProjectile(
                 // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                this.parent.pos.x, this.parent.pos.y, Resources.StaffProjectile, 0.1, 0.1, 700, 0, 200, this.direction)
+                this.parent.pos.x, this.parent.pos.y, Resources.StaffProjectile, 0.1, 0.1, 700, 0, 200, this.direction,
+                Resources.ThrowingAxe.width / 15, Resources.ThrowingAxe.height /15)
             engine.add(projectile)
         }
     }  

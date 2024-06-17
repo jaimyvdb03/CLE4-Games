@@ -90,7 +90,7 @@ export class Player extends Actor {
     }
 
     armPlayer() {
-        const weapon = new ThrowingAxe()
+        const weapon = new Bow( )
         this.weapon = weapon
         this.addChild(weapon)
     }

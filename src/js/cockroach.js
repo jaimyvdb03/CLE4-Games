@@ -23,8 +23,8 @@ export class Cockroach extends Actor {
         ])
         this.collider.set(capsule)
         this.engine = engine;
-        this.pos.x = 500;
-        this.pos.y = 500;
+        this.pos.x = 2050;
+        this.pos.y = 450;
         this.graphics.use(Resources.CockroachRight1.toSprite());
 
         this.timer = new Timer({

@@ -24,7 +24,8 @@ export class Bow extends Actor {
             }
             const projectile = new WeaponProjectile(
                 // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                this.parent.pos.x, this.parent.pos.y, Resources.Arrow, this.scaleX, 0.15, 800, 0, 0, this.direction)
+                this.parent.pos.x, this.parent.pos.y, Resources.Arrow, this.scaleX, 0.15, 800, 0, 0, this.direction,
+                Resources.Arrow.width / 15, Resources.Arrow.height /15)
             engine.add(projectile)
         }
     }   
