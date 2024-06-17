@@ -16,9 +16,19 @@ import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 
 export class Wave1 extends Scene {
-    onInitialize(engine, gamepad) {
-        console.log("Wave 1");
+    constructor(gamepad){
+        super({
+            width: 2560,
+            height: 720,
+            maxFps: 60,
+            displayMode: DisplayMode.FitScreen
+        });
+        this.gamepad = gamepad
 
+    }
+
+    onInitialize(engine,gamepad) {
+        console.log("Wave 1");
         // Adding background
         const background1 = new Background;
         this.add(background1);
@@ -57,7 +67,8 @@ export class Wave1 extends Scene {
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
 
-        let player = new Player(1350, 300, gamepad);
+        console.log(this.gamepad);
+        let player = new Player(1350, 300, this.gamepad);
         this.add(player);
 
         // this.camera.zoom = 1.1;

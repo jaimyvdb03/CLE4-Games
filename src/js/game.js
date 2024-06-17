@@ -65,10 +65,16 @@ export class Game extends Engine {
     }
 
   //game.js naar scene 1
-    startGame() {
+    startGame(gamepad) {
         console.log("Start de game!");
 
-        this.add('wave1', new Wave1());
+        this.input.gamepads.enabled = true
+        this.input.gamepads.on('connect', (connectevent) => {
+            console.log("gamepad detected")
+            this.mygamepad = connectevent.gamepad
+        })
+
+        this.add('wave1', new Wave1(gamepad));
 
         // Start with the intro scene
         this.goToScene('wave1');
