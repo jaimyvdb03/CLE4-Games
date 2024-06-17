@@ -1,5 +1,5 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, Axis, BoundingBox} from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Background } from './background.js'
 import { Player } from './Player.js'
@@ -19,7 +19,7 @@ import { Life } from './Lifes.js';
 export class Game extends Engine {
     constructor() {
         super({
-            width: 2560,
+            width: 1280,
             height: 720,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen
@@ -62,7 +62,7 @@ export class Game extends Engine {
         const hotel = new Hotel()
         this.add(hotel);
       
-      this.add(new Speedboost(400, 400));
+        this.add(new Speedboost(400, 400));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
@@ -70,6 +70,12 @@ export class Game extends Engine {
         let player = new Player(1350, 300);
         this.add(player);
 
+        // screen follow player
+        this.currentScene.camera.strategy.lockToActorAxis(player, Axis.X);
+
+        const boundingBox = new BoundingBox(0, 0, 2560, 720);
+        this.currentScene.camera.strategy.limitCameraBounds(boundingBox);
+        
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
         let lich = new Lich(player);
