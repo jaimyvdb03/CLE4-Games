@@ -1,4 +1,4 @@
-import { Actor, Engine, Vector, CollisionType, Timer, CompositeCollider, Shape } from "excalibur";
+import { Actor, Vector, CollisionType, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
 import { LichProjectile } from "./lich-projectile.js";
 import { Enemies } from "./enemies.js";
@@ -125,6 +125,13 @@ export class Lich extends Enemies {
             this.engine.add(this.attackTimer);
             this.attackTimer.start();
             this.attackTimerActive = true;
+        }
+    }
+
+    stopAttackTimer() {
+        if (this.attackTimer) {
+            this.attackTimer.stop();
+            this.attackTimerActive = false;
         }
     }
 }
