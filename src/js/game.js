@@ -25,6 +25,12 @@ export class Game extends Engine {
             displayMode: DisplayMode.FitScreen
         })
         this.start(ResourceLoader).then(() => this.startGame())
+        this.points = 0
+    }
+
+    addPoints(addedPoints) {
+        this.points += addedPoints
+        console.log(`${this.points} punten!`)
     }
 
     startGame() {
