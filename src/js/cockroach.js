@@ -5,7 +5,7 @@ import { enemyGroup } from "./collisionGroups.js";
 
 
 export class Cockroach extends Enemies {
-    constructor(wave, player) {
+    constructor(player) {
         super({
             width: Resources.CockroachRight1.width,
             height: Resources.CockroachRight1.height / 2

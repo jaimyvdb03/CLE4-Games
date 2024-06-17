@@ -14,6 +14,7 @@ export class Game extends Engine {
         });
         this.start(ResourceLoader).then(() => this.startGame());
         this.points = 0
+
     }
 
     waitForGamepad() {
@@ -25,22 +26,6 @@ export class Game extends Engine {
         });
     }
 
-  //game.js naar scene 1
-    startGame() {
-        console.log("Start de game!");
-
-        this.add('wave1', new Wave1());
-
-        // Start with the intro scene
-        this.goToScene('wave1');
-
-        })
-        this.start(ResourceLoader).then(() => this.startGame())
-        this.points = 0
-    }
-
-  //overige functie moeten naar scene 1 & camara lock op speler
-  
     addPoints(addedPoints) {
         this.points += addedPoints
         console.log(`${this.points} punten!`)
@@ -78,6 +63,24 @@ export class Game extends Engine {
         }
 
     }
+
+  //game.js naar scene 1
+    startGame() {
+        console.log("Start de game!");
+
+        this.add('wave1', new Wave1());
+
+        // Start with the intro scene
+        this.goToScene('wave1');
+
+        }
 }
+
+  //overige functie moeten naar scene 1 & camara lock op speler
+  
+ 
+
+    
+
 
 new Game();
