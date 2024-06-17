@@ -4,6 +4,8 @@ import { Bow } from "./bow.js";
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Spellbook } from "./spellbook.js";
 import { Staff } from "./staff.js";
+import { Enemies } from "./enemies.js";
+import { LichProjectile } from "./lich-projectile.js";
 
 
 export class Player extends Actor {
@@ -27,7 +29,7 @@ export class Player extends Actor {
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
         this.armPlayer()
-        this.pos = new Vector(1350, 300);
+        this.pos = new Vector(1350, 500);
     }
 
     handleCollision(evt) {
@@ -38,11 +40,17 @@ export class Player extends Actor {
             this.speedMultiplier = 2; // Increase speed by 2 times (not 5 times as originally stated)
             this.speedBoostTimer = 10 * 1000; // 10 seconds
             this.speedBoostActive = true;
-        } else if(evt.other.name === 'lifeboost') {
+        } else if (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
             evt.other.kill();
-            this._lifes += 1;   
-            console.log(this._lifes)        
+            this._lifes += 1;
+            console.log(this._lifes)
+        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
+            this._lifes -= 1;
+            if (this._lifes <= 0) {
+                console.log('Collided with an enemy');
+                this.kill();
+            }
         }
     }
 
@@ -101,6 +109,7 @@ export class Player extends Actor {
             this.weapon.pos.x = 30
             this.weapon.direction = 1
         }
+      
         if (direction == 0) {
             this.weapon.scale.x = -1
             this.weapon.pos.x = -30
