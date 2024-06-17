@@ -1,7 +1,8 @@
 import { Actor, CollisionType, Vector, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
+import { Enemies } from "./enemies.js";
 
-export class Reaper extends Actor {
+export class Reaper extends Enemies {
     constructor(player) {
         super({
             width: Resources.ReaperRight.width / 2,
@@ -23,8 +24,7 @@ export class Reaper extends Actor {
         this.collider.set(capsule)
 
         this.engine = engine;
-        this.pos.x = 500;
-        this.pos.y = 500;
+        this.pos = new Vector(1350, 100);
         this.toggleSprite()
         this.timer = new Timer({
             interval: 500,

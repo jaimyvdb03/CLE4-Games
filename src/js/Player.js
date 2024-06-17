@@ -1,18 +1,21 @@
-import { Actor, Vector, Keys, CollisionType } from "excalibur";
+import { Actor, Vector, Keys, CollisionType, Input } from "excalibur";
 import { Resources } from './resources.js';
-import { Bow } from "./bow.js";
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Spellbook } from "./spellbook.js";
 import { Staff } from "./staff.js";
+import { Enemies } from "./enemies.js";
+import { LichProjectile } from "./lich-projectile.js";
 
 
 export class Player extends Actor {
-    constructor(x, y) {
+    constructor(x, y, gamepad) {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.speedMultiplier = 1; // Default speed multiplier
         this._lifes = 4; // Initialize lifes from constructor parameter
-        console.log(this._lifes)
+        this.gamepad = gamepad; // Store the gamepad instance
+        this.joystickMoved = false; // Flag to track if joystick moved
+        console.log(this._lifes);
     }
 
     // Getter for lifes
@@ -27,22 +30,34 @@ export class Player extends Actor {
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
         this.armPlayer()
-        this.pos = new Vector(600, 600);
+        this.pos = new Vector(1350, 500);
+        this.armPlayer();
+        this.pos = new Vector(1350, 300);
     }
 
     handleCollision(evt) {
-        if (evt.other.name === 'speedboost') {
+         // Pickup speedboost
+         if (evt.other.name === 'speedboost') {
             // Activate the speed boost
             console.log('picked up speedboost');
             evt.other.kill();
             this.speedMultiplier = 2; // Increase speed by 2 times (not 5 times as originally stated)
             this.speedBoostTimer = 10 * 1000; // 10 seconds
             this.speedBoostActive = true;
-        } else if(evt.other.name === 'lifeboost') {
+        }
+        // Pickup lifeboost
+        else if  (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
             evt.other.kill();
-            this._lifes += 1;   
-            console.log(this._lifes)        
+            this._lifes += 1;
+            console.log(this._lifes);
+        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
+            this._lifes -= 1;
+            console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
+            if (this._lifes <= 0) {
+                console.log('Collided with an enemy');
+                this.kill();
+            }
         }
     }
 
@@ -50,61 +65,71 @@ export class Player extends Actor {
         let xspeed = 0;
         let yspeed = 0;
 
-        // Update speed boost timer
-        if (this.speedBoostActive) {
-            this.speedBoostTimer -= delta;
-            if (this.speedBoostTimer <= 0) {
-                this.speedBoostActive = false;
-                this.speedMultiplier = 1; // Reset speed multiplier to normal
-            }
-        }
-
-        // Player movement
-        // Up
+        // Keyboard input
         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
             yspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
         }
 
-        // Down
         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
             yspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
         }
 
-        // Left
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = false;
+            this.turnWeapon(0)
         }
 
-        // Right
         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
+            this.turnWeapon(1)
         }
 
+        // Gamepad input
+        if (this.gamepad) {
+            const leftStickX = this.gamepad.axes[0]; // X-axis of left stick
+            const leftStickY = this.gamepad.axes[1]; // Y-axis of left stick
+
+            // Apply a deadzone to prevent drift when the stick is near the center
+            const deadzone = 0.1;
+            if (Math.abs(leftStickX) > deadzone || Math.abs(leftStickY) > deadzone) {
+                this.joystickMoved = true; // Joystick moved flag
+            } else {
+                this.joystickMoved = false; // Joystick back to center
+            }
+
+            // Calculate speed based on joystick position
+            xspeed = leftStickX * 350 * this.speedMultiplier;
+            yspeed = leftStickY * 350 * this.speedMultiplier;
+
+            // Flip graphics based on movement direction
+            if (xspeed !== 0) {
+                this.graphics.flipHorizontal = xspeed > 0;
+            }
+        }
+
+        // Set velocity based on computed speeds
         this.vel = new Vector(xspeed, yspeed);
-      
-        if (xspeed > 0 || xspeed < 0) {
-            this.turnWeapon(xspeed)
+
+        // Update player direction only if joystick has moved
+        if (this.joystickMoved) {
+            this.turnWeapon(xspeed);
         }
     }
 
     armPlayer() {
-        const weapon = new ThrowingAxe()
-        this.weapon = weapon
-        this.addChild(weapon)
+        const weapon = new ThrowingAxe();
+        this.weapon = weapon;
+        this.addChild(weapon);
     }
 
     turnWeapon(xspeed) {
         if (xspeed > 0) {
             this.weapon.scale.x = 1
             this.weapon.pos.x = 30
-        }
-        if (xspeed <0) {
-            this.weapon.scale.x = -1
-            this.weapon.pos.x = -30
         }
     }
 }

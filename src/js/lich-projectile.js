@@ -18,6 +18,7 @@ export class LichProjectile extends Actor {
         this.graphics.use(sprite);
 
 
+
     }
 
     update(engine, delta) {
