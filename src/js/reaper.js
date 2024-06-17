@@ -3,6 +3,7 @@ import { Resources } from './resources.js';
 import { Enemies } from "./enemies.js";
 import { enemyGroup } from "./collisionGroups.js";
 
+
 export class Reaper extends Enemies {
     constructor(player) {
         super({

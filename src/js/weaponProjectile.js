@@ -1,8 +1,8 @@
-import { Actor, Vector } from "excalibur";
-import { Resources } from './resources';
-import { Cockroach } from "./cockroach.js";
-import { Lich } from "./lich.js";
-import { Reaper } from "./reaper.js";
+import { Actor, Vector } from "excalibur"
+import { Resources } from './resources'
+import {Cockroach} from "./cockroach.js";
+import {Lich} from "./lich.js";
+import {Reaper} from "./reaper.js";
 
 export class WeaponProjectile extends Actor {
     constructor(x, y, sprite, scaleX, scaleY, velX, velY, angVel, direction, width, height) {
@@ -25,6 +25,7 @@ export class WeaponProjectile extends Actor {
         this.vel.x = this.vel.x * this.direction;
 
         this.on('collisionstart', (event) => this.killMonster(event, engine));
+
     }
 
     killMonster(event, engine) {
