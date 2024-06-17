@@ -51,6 +51,13 @@ export class Player extends Actor {
             evt.other.kill();
             this._lifes += 1;
             console.log(this._lifes);
+        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
+            this._lifes -= 1;
+            console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
+            if (this._lifes <= 0) {
+                console.log('Collided with an enemy');
+                this.kill();
+            }
         }
     }
 
@@ -123,10 +130,6 @@ export class Player extends Actor {
         if (xspeed > 0) {
             this.weapon.scale.x = 1
             this.weapon.pos.x = 30
-        }
-        if (xspeed <0) {
-            this.weapon.scale.x = -1
-            this.weapon.pos.x = -30
         }
     }
 }
