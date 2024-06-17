@@ -27,6 +27,12 @@ export class Game extends Engine {
         this.start(ResourceLoader).then(() => this.startGame())
     }
 
+    wave = 1;
+    enemiesLeft = 0;
+    spawnTimer = 0;
+    enemiesToSpawn = 0;
+    player;
+
     startGame() {
         console.log("start de game!")
 
@@ -67,29 +73,53 @@ export class Game extends Engine {
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
       
-        let player = new Player(1350, 300);
-        this.add(player);
+        this.player = new Player(1350, 300);
+        this.add(this.player);
 
         // screen follow player
-        this.currentScene.camera.strategy.lockToActorAxis(player, Axis.X);
+        this.currentScene.camera.strategy.lockToActorAxis(this.player, Axis.X);
 
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.currentScene.camera.strategy.limitCameraBounds(boundingBox);
         
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
-        let lich = new Lich(player);
+        let lich = new Lich(this.player);
         this.add(lich);
 
-        let roach = new Cockroach(player);
-        this.add(roach);
-
-        let reaper = new Reaper(player);
+        let reaper = new Reaper(this.player);
         this.add(reaper);
 
         
-        this.add(new Life(75, 50, player));
+        this.add(new Life(75, 50, this.player));
 
+        this.startWave(this.engine);
+    }
+
+    startWave() {
+        const numberOfEnemies = this.wave + 2; // change enemy amount here
+        this.enemiesToSpawn = numberOfEnemies;
+        this.enemiesLeft = numberOfEnemies;
+        this.spawnTimer = 0;
+    }
+
+    onPreUpdate(engine, delta) {
+        this.spawnTimer += delta / 1000; // change spawn time here
+
+        if (this.enemiesToSpawn > 0 && this.spawnTimer >= 1) {
+            const enemy = new Cockroach(this.wave, this.player); //change enemy here
+            this.add(enemy);
+            this.enemiesToSpawn--;
+            this.spawnTimer = 0;
+        }
+    }
+
+    onEnemyKilled() {
+        this.enemiesLeft--;
+        if (this.enemiesLeft === 0) {
+            this.wave++;
+            this.startWave();
+        }
     }
 }
 

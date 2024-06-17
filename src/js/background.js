@@ -22,11 +22,11 @@ export class Background extends Actor {
             Shape.Edge(new Vector(2400, -200), new Vector(2400, 0)), 
             Shape.Edge(new Vector(2400, 0), new Vector(1450, 0)),
             Shape.Edge(new Vector(1450, 0), new Vector(1450, -200)), 
-            Shape.Edge(new Vector(1450, -200), new Vector(1250, -200)), 
+            Shape.Edge(new Vector(1450, -200), new Vector(1250, -200)),  //entry top middle
             Shape.Edge(new Vector(1250, -200), new Vector(1250, 0)), 
             Shape.Edge(new Vector(1250, 0), new Vector(280, 0)), 
             Shape.Edge(new Vector(280, 0), new Vector(280, -200)), 
-            Shape.Edge(new Vector(280, -200), new Vector(90, -200)),
+            Shape.Edge(new Vector(280, -200), new Vector(90, -200)), //entry left right
         ])
         this.body.collisionType = CollisionType.Fixed
         this.collider.set(map1)

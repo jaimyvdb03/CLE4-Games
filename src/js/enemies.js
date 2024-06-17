@@ -16,6 +16,7 @@ export class Enemies extends Actor {
     update(engine, delta) {
         super.update(engine, delta);
 
+        /*
         const screenHeight = engine.drawHeight;
 
         // Enemy blijft in het scherm, horizontaal
@@ -31,5 +32,6 @@ export class Enemies extends Actor {
         } else if (this.pos.y > screenHeight - this.height / 2) {
             this.pos.y = screenHeight - this.height / 2;
         }
+        */
     }
 }
