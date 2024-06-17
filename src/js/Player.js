@@ -8,6 +8,7 @@ import { Enemies } from "./enemies.js";
 import { LichProjectile } from "./lich-projectile.js";
 
 
+
 export class Player extends Actor {
     constructor(x, y) {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
