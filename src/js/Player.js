@@ -6,7 +6,6 @@ import { Staff } from "./staff.js";
 import { Enemies } from "./enemies.js";
 import { LichProjectile } from "./lich-projectile.js";
 
-
 export class Player extends Actor {
     constructor(x, y, gamepad) {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
@@ -31,8 +30,6 @@ export class Player extends Actor {
         this.vel = new Vector(0, 0);
         this.armPlayer()
         this.pos = new Vector(1350, 500);
-        this.armPlayer();
-        this.pos = new Vector(1350, 300);
     }
 
     handleCollision(evt) {
@@ -54,10 +51,15 @@ export class Player extends Actor {
         } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
             this._lifes -= 1;
             console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
-            if (this._lifes <= 0) {
-                console.log('Collided with an enemy');
-                this.kill();
-            }
+
+        } else if (evt.other.name === 'lifeboost') {
+            console.log('picked up lifeboost');
+            evt.other.kill();
+            this._lifes += 1;
+            console.log(this._lifes)
+        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
+            this._lifes -= 1;
+
         }
     }
 
@@ -86,6 +88,7 @@ export class Player extends Actor {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
             this.turnWeapon(1)
+
         }
 
         // Gamepad input
@@ -126,10 +129,23 @@ export class Player extends Actor {
         this.addChild(weapon);
     }
 
-    turnWeapon(xspeed) {
-        if (xspeed > 0) {
+    armPlayer() {
+        const weapon = new Bow( )
+        this.weapon = weapon
+        this.addChild(weapon)
+    }
+
+    turnWeapon(direction, ) {
+        if (direction == 1) {
             this.weapon.scale.x = 1
             this.weapon.pos.x = 30
+            this.weapon.direction = 1
+        }
+      
+        if (direction == 0) {
+            this.weapon.scale.x = -1
+            this.weapon.pos.x = -30
+            this.weapon.direction = -1
         }
     }
 }
