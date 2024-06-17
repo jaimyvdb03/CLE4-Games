@@ -1,7 +1,9 @@
 import { Actor, CollisionType, Vector, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
+import { Enemies } from "./enemies.js";
 
-export class Cockroach extends Actor {
+
+export class Cockroach extends Enemies {
     constructor(player) {
         super({
             width: Resources.CockroachRight1.width,
@@ -23,8 +25,7 @@ export class Cockroach extends Actor {
         ])
         this.collider.set(capsule)
         this.engine = engine;
-        this.pos.x = 500;
-        this.pos.y = 500;
+        this.pos = new Vector(1350, 100);
         this.graphics.use(Resources.CockroachRight1.toSprite());
 
         this.timer = new Timer({

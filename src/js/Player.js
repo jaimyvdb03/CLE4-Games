@@ -1,6 +1,11 @@
 import { Actor, Vector, Keys, CollisionType, Input } from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
+import { Spellbook } from "./spellbook.js";
+import { Staff } from "./staff.js";
+import { Enemies } from "./enemies.js";
+import { LichProjectile } from "./lich-projectile.js";
+
 
 export class Player extends Actor {
     constructor(x, y, gamepad) {
@@ -24,6 +29,8 @@ export class Player extends Actor {
         this.graphics.use(Resources.Player.toSprite());
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
+        this.armPlayer()
+        this.pos = new Vector(1350, 500);
         this.armPlayer();
         this.pos = new Vector(1350, 300);
     }
@@ -39,7 +46,7 @@ export class Player extends Actor {
             this.speedBoostActive = true;
         }
         // Pickup lifeboost
-        else if (evt.other.name === 'lifeboost') {
+        else if  (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
             evt.other.kill();
             this._lifes += 1;
@@ -65,11 +72,13 @@ export class Player extends Actor {
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = false;
+            this.turnWeapon(0)
         }
 
         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
+            this.turnWeapon(1)
         }
 
         // Gamepad input
@@ -112,12 +121,12 @@ export class Player extends Actor {
 
     turnWeapon(xspeed) {
         if (xspeed > 0) {
-            this.weapon.scale.x = 1;
-            this.weapon.pos.x = 30;
+            this.weapon.scale.x = 1
+            this.weapon.pos.x = 30
         }
-        if (xspeed < 0) {
-            this.weapon.scale.x = -1;
-            this.weapon.pos.x = -30;
+        if (xspeed <0) {
+            this.weapon.scale.x = -1
+            this.weapon.pos.x = -30
         }
     }
 }
