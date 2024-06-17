@@ -17,13 +17,13 @@ export class WeaponProjectile extends Actor {
     }
 
     onInitialize(engine) {
+        
         const projectileSprite = this.sprite.toSprite();
         projectileSprite.scale = new Vector(this.scaleX, this.scaleY);
         this.graphics.use(projectileSprite);
         this.vel = new Vector(this.velX, this.velY);
         this.angularVelocity = this.angVel;
         this.vel.x = this.vel.x * this.direction;
-
         this.on('collisionstart', (event) => this.killMonster(event, engine));
     }
 
@@ -32,6 +32,7 @@ export class WeaponProjectile extends Actor {
             event.other.kill();
             this.kill();
             engine.addPoints(20);
+            engine.onEnemyKilled();
         }
         if (event.other instanceof Lich) {
             event.other.stopAttackTimer();

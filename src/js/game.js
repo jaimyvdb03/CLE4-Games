@@ -1,5 +1,5 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, Axis, BoundingBox} from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, Axis, BoundingBox } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Background } from './background.js'
 import { Player } from './Player.js'
@@ -61,7 +61,7 @@ export class Game extends Engine {
         this.add(fence);
 
         //adding bollards
-        const Bollard1 = new Bollard(105, 90, Resources.Bollard1) //x,y,image
+        const Bollard1 = new Bollard(105, 90, Resources.Bollard1) //x,y,image,image
         this.add(Bollard1);
         const Bollard2 = new Bollard(115, 260, Resources.Bollard2) //x,y,height,image
         this.add(Bollard2);
@@ -75,12 +75,12 @@ export class Game extends Engine {
         //adding hotel
         const hotel = new Hotel()
         this.add(hotel);
-      
+
         this.add(new Speedboost(400, 400));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
-      
+
         this.player = new Player(1350, 300);
         this.add(this.player);
 
@@ -89,7 +89,7 @@ export class Game extends Engine {
 
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.currentScene.camera.strategy.limitCameraBounds(boundingBox);
-      
+
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
         let lich = new Lich(this.player);
@@ -97,17 +97,17 @@ export class Game extends Engine {
 
         let reaper = new Reaper(this.player);
         this.add(reaper);
-        
+
         this.add(new Life(75, 50, this.player));
 
         this.startWave(this.engine);
     }
 
     startWave() {
+        console.log(`start wave ${this.wave}`)
         const numberOfEnemies = this.wave + 2; // change enemy amount here
         this.enemiesToSpawn = numberOfEnemies;
         this.enemiesLeft = numberOfEnemies;
-        this.spawnTimer = 0;
     }
 
     onPreUpdate(engine, delta) {
