@@ -19,14 +19,14 @@ export class Enemies extends Actor {
     update(engine, delta) {
         super.update(engine, delta);
 
-        const screenWidth = engine.drawWidth;
+        /*
         const screenHeight = engine.drawHeight;
 
         // Enemy blijft in het scherm, horizontaal
         if (this.pos.x < this.width / 2) {
             this.pos.x = this.width / 2;
-        } else if (this.pos.x > screenWidth - this.width / 2) {
-            this.pos.x = screenWidth - this.width / 2;
+        } else if (this.pos.x > 2560 - this.width / 2) {
+            this.pos.x = 2560 - this.width / 2;
         }
 
         // Enemy blijft in het scherm, verticaal
@@ -35,5 +35,6 @@ export class Enemies extends Actor {
         } else if (this.pos.y > screenHeight - this.height / 2) {
             this.pos.y = screenHeight - this.height / 2;
         }
+        */
     }
 }

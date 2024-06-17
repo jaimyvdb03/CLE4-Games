@@ -5,7 +5,7 @@ import { enemyGroup } from "./collisionGroups.js";
 
 
 export class Cockroach extends Enemies {
-    constructor(player) {
+    constructor(wave, player) {
         super({
             width: Resources.CockroachRight1.width,
             height: Resources.CockroachRight1.height / 2
@@ -27,7 +27,6 @@ export class Cockroach extends Enemies {
         ])
         this.collider.set(capsule)
         this.engine = engine;
-        this.pos = new Vector(1350, 100);
         this.graphics.use(Resources.CockroachRight1.toSprite());
 
         this.timer = new Timer({
@@ -38,6 +37,15 @@ export class Cockroach extends Enemies {
         engine.add(this.timer);
         console.log()
         this.timer.start();
+
+        //pos
+        const spawnPositions = [
+            new Vector(185, -100),
+            new Vector(1350, -100),
+            new Vector(2455, -100)
+        ];
+        const randomIndex = Math.floor(Math.random() * spawnPositions.length);
+        this.pos = spawnPositions[randomIndex];
     }
 
     toggleSprite() {
