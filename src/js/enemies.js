@@ -1,5 +1,6 @@
-import { Actor, Vector, Engine } from "excalibur";
+import { Actor, Vector, Engine, CollisionGroup } from "excalibur";
 import { Resources } from './resources.js';
+import { enemyGroup } from './collisionGroups.js';
 
 export class Enemies extends Actor {
     constructor(width, height) {
@@ -11,6 +12,8 @@ export class Enemies extends Actor {
 
     onInitialize(engine) {
         this.engine = engine;
+        this.body.group = enemyGroup;
+        console.log(this.body.group)
     }
 
     update(engine, delta) {

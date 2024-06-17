@@ -14,6 +14,8 @@ import { Lich } from './lich.js'
 import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
+import { enemyGroup } from './collisionGroups.js';
+import * as ex from 'excalibur';
 
 
 export class Game extends Engine {
@@ -25,6 +27,12 @@ export class Game extends Engine {
             displayMode: DisplayMode.FitScreen
         })
         this.start(ResourceLoader).then(() => this.startGame())
+        this.points = 0
+    }
+
+    addPoints(addedPoints) {
+        this.points += addedPoints
+        console.log(`${this.points} punten!`)
     }
 
     wave = 1;
@@ -81,7 +89,7 @@ export class Game extends Engine {
 
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.currentScene.camera.strategy.limitCameraBounds(boundingBox);
-        
+      
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
         let lich = new Lich(this.player);
@@ -89,7 +97,6 @@ export class Game extends Engine {
 
         let reaper = new Reaper(this.player);
         this.add(reaper);
-
         
         this.add(new Life(75, 50, this.player));
 

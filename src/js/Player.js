@@ -8,6 +8,7 @@ import { Enemies } from "./enemies.js";
 import { LichProjectile } from "./lich-projectile.js";
 
 
+
 export class Player extends Actor {
     constructor(x, y) {
         super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
@@ -30,7 +31,6 @@ export class Player extends Actor {
         this.vel = new Vector(0, 0);
         this.armPlayer()
         this.pos = new Vector(1350, 500);
-
     }
 
     handleCollision(evt) {
@@ -85,35 +85,36 @@ export class Player extends Actor {
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = false;
+            this.turnWeapon(0)
         }
 
         // Right
         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
+            this.turnWeapon(1)
         }
 
         this.vel = new Vector(xspeed, yspeed);
-
-        if (xspeed > 0 || xspeed < 0) {
-            this.turnWeapon(xspeed)
-        }
     }
 
     armPlayer() {
-        const weapon = new ThrowingAxe()
+        const weapon = new Bow( )
         this.weapon = weapon
         this.addChild(weapon)
     }
 
-    turnWeapon(xspeed) {
-        if (xspeed > 0) {
+    turnWeapon(direction, ) {
+        if (direction == 1) {
             this.weapon.scale.x = 1
             this.weapon.pos.x = 30
+            this.weapon.direction = 1
         }
-        if (xspeed < 0) {
+      
+        if (direction == 0) {
             this.weapon.scale.x = -1
             this.weapon.pos.x = -30
+            this.weapon.direction = -1
         }
     }
 }

@@ -1,6 +1,7 @@
 import { Actor, CollisionType, Vector, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
 import { Enemies } from "./enemies.js";
+import { enemyGroup } from "./collisionGroups.js";
 
 
 export class Cockroach extends Enemies {
@@ -17,6 +18,7 @@ export class Cockroach extends Enemies {
         this.isFacingRight = true;
         this.speed = 65; //standaard snelheid
         this.timeSinceLastChange = 0;
+        this.body.group = enemyGroup;
     }
 
     onInitialize(engine) {
