@@ -14,6 +14,8 @@ import { Lich } from './lich.js'
 import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
+import { enemyGroup } from './collisionGroups.js';
+import * as ex from 'excalibur';
 
 
 export class Game extends Engine {
@@ -67,14 +69,15 @@ export class Game extends Engine {
         //adding hotel
         const hotel = new Hotel()
         this.add(hotel);
-      
-      this.add(new Speedboost(400, 400));
+
+        this.add(new Speedboost(400, 400));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
-      
+
         let player = new Player(1350, 300);
         this.add(player);
+
 
         //this.camera.zoom = 1.1;
         //this.camera.strategy.lockToActor(player);
@@ -87,7 +90,7 @@ export class Game extends Engine {
         let reaper = new Reaper(player);
         this.add(reaper);
 
-        
+
         this.add(new Life(75, 50, player));
 
     }

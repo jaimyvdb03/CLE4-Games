@@ -2,6 +2,7 @@ import { Actor, Engine, Vector, CollisionType, Timer, CompositeCollider, Shape }
 import { Resources } from './resources.js';
 import { LichProjectile } from "./lich-projectile.js";
 import { Enemies } from "./enemies.js";
+import { enemyGroup } from "./collisionGroups.js";
 
 export class Lich extends Enemies {
     constructor(player) {
@@ -15,6 +16,7 @@ export class Lich extends Enemies {
         this.attackTimer = null;
         this.attackTimerActive = false;
         this.isAttacking = false;
+        this.body.group = enemyGroup;
     }
 
     onInitialize(engine) {
