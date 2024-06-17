@@ -1,6 +1,7 @@
 import { Actor, Vector, Keys, CollisionType, Input } from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
+import { Bow } from "./bow.js";
 import { Spellbook } from "./spellbook.js";
 import { Staff } from "./staff.js";
 import { Enemies } from "./enemies.js";
