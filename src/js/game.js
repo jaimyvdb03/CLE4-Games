@@ -1,21 +1,7 @@
-import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
-import { Background } from './background.js'
-import { Player } from './Player.js'
-import { Bush } from './map-objects/bush.js'
-import { Fence } from './map-objects/fence.js'
-import { Bollard } from './map-objects/bollard.js'
-import { Playground } from './map-objects/playground.js'
-import { Hotel } from './hotel.js'
-import { Cockroach } from './cockroach.js'
-import { Reaper } from './reaper.js'
-import { Lich } from './lich.js'
-import { Speedboost } from './Speedboost.js';
-import { Lifeboost } from './Lifeboost.js';
-import { Life } from './Lifes.js';
-import {ScoreLabel} from "./scoreLabel.js";
-
+import '../css/style.css';
+import { Actor, Engine, Vector, DisplayMode, Input } from "excalibur";
+import { Resources, ResourceLoader } from './resources.js';
+import { Wave1 } from './scene_wave1.js';
 
 export class Game extends Engine {
     constructor() {
@@ -24,80 +10,74 @@ export class Game extends Engine {
             height: 720,
             maxFps: 60,
             displayMode: DisplayMode.FitScreen
+
+        });
+        this.start(ResourceLoader).then(() => this.startGame());
+        this.points = 0
+    }
+
+    waitForGamepad() {
+        console.log("Waiting for gamepad connection...");
+
+        window.addEventListener('gamepadconnected', (event) => {
+            console.log('Gamepad connected:', event.gamepad);
+            this.startGame(event.gamepad);
+        });
+    }
+
+  //game.js naar scene 1
+    startGame() {
+        console.log("Start de game!");
+
+        this.add('wave1', new Wave1());
+
+        // Start with the intro scene
+        this.goToScene('wave1');
+
         })
         this.start(ResourceLoader).then(() => this.startGame())
         this.points = 0
-        this.scoreLabel = null
     }
 
-    startGame() {
-        console.log("start de game!")
-
-        //adding background
-        const background1 = new Background;
-        this.add(background1);
-
-        //adding bushes
-        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)) //x,y,width,height,image,anchor
-        this.add(bush1);
-        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)) //x,y,width,height,image,anchor
-        this.add(bush2);
-        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)) //x,y,width,height,image,anchor
-        this.add(bush3);
-
-        //adding fence
-        const fence = new Fence()
-        this.add(fence);
-
-        //adding bollards
-        const Bollard1 = new Bollard(105, 90, Resources.Bollard1) //x,y,image
-        this.add(Bollard1);
-        const Bollard2 = new Bollard(115, 260, Resources.Bollard2) //x,y,height,image
-        this.add(Bollard2);
-        const Bollard3 = new Bollard(115, 470, Resources.Bollard3) //x,y,height,image
-        this.add(Bollard3);
-
-        //adding playground
-        const playground = new Playground()
-        this.add(playground);
-
-        //adding hotel
-        const hotel = new Hotel()
-        this.add(hotel);
-
-      this.add(new Speedboost(400, 400));
-        this.add(new Lifeboost(600, 400));
-        this.add(new Lifeboost(630, 400));
-        this.add(new Lifeboost(660, 400));
-
-        let player = new Player(1350, 300);
-        this.add(player);
-
-        //this.camera.zoom = 1.1;
-        //this.camera.strategy.lockToActor(player);
-        let lich = new Lich(player);
-        this.add(lich);
-
-        let roach = new Cockroach(player);
-        this.add(roach);
-
-        let reaper = new Reaper(player);
-        this.add(reaper);
-
-        this.add(new Life(75, 50, player));
-
-        this.scoreLabel = new ScoreLabel(50, 75)
-        this.add(this.scoreLabel)
-    }
-
+  //overige functie moeten naar scene 1 & camara lock op speler
+  
     addPoints(addedPoints) {
         this.points += addedPoints
-        if (this.scoreLabel) {
-            this.scoreLabel.changeText(this.points)
+        console.log(`${this.points} punten!`)
+    }
+
+    wave = 1;
+    enemiesLeft = 0;
+    spawnTimer = 0;
+    enemiesToSpawn = 0;
+    player;
+
+    startWave() {
+        const numberOfEnemies = this.wave + 2; // change enemy amount here
+        this.enemiesToSpawn = numberOfEnemies;
+        this.enemiesLeft = numberOfEnemies;
+        this.spawnTimer = 0;
+    }
+
+    onPreUpdate(engine, delta) {
+        this.spawnTimer += delta / 1000; // change spawn time here
+
+        if (this.enemiesToSpawn > 0 && this.spawnTimer >= 1) {
+            const enemy = new Cockroach(this.wave, this.player); //change enemy here
+            this.add(enemy);
+            this.enemiesToSpawn--;
+            this.spawnTimer = 0;
         }
     }
+
+    onEnemyKilled() {
+        this.enemiesLeft--;
+        if (this.enemiesLeft === 0) {
+            this.wave++;
+            this.startWave();
+        }
+
+    }
 }
-
-
 
 new Game();

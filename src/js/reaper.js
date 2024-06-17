@@ -1,6 +1,8 @@
 import { Actor, CollisionType, Vector, Timer, CompositeCollider, Shape } from "excalibur";
 import { Resources } from './resources.js';
 import { Enemies } from "./enemies.js";
+import { enemyGroup } from "./collisionGroups.js";
+
 
 export class Reaper extends Enemies {
     constructor(player) {
@@ -15,6 +17,8 @@ export class Reaper extends Enemies {
         this.isFacingRight = true;
         this.speed = 50; // vaste snelheid
         this.timeSinceLastChange = 0;
+        this.body.group = enemyGroup;
+
     }
 
     onInitialize(engine) {
