@@ -1,5 +1,5 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, Scene, Axis, BoundingBox } from "excalibur"
+import { Actor, Engine, Vector, DisplayMode, Scene, Axis, BoundingBox, Label } from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
 import { Background } from './background.js';
 import { Player } from './Player.js';
@@ -15,16 +15,20 @@ import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
+
+import { WaveLabel } from './waveLabel.js';
 import {ScoreLabel} from "./scoreLabel.js";
+
 
 export class Wave1 extends Scene {
     constructor() {
         super();
         this.scoreLabel = null;
+        this.currentWaveLabel = null;
+        this.totalWaves = 5;
+
     }
     onInitialize(engine, gamepad) {
-        console.log("Wave 1");
-
         // Adding background
         const background1 = new Background;
         this.add(background1);
@@ -85,42 +89,54 @@ export class Wave1 extends Scene {
         this.lifeDisplay = new Life(this.player);
         this.add(this.lifeDisplay);
 
+
+        this.currentWaveLabel = new WaveLabel(600, 20, this.totalWaves);
+        this.add(this.currentWaveLabel);
+      
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
 
         this.startWave()
 
     }
+
     wave = 1;
-    enemiesLeft = 0;
+    enemiesLeftBeforeNewWave = 10;
+    increaseEnemyWave = 10;
     spawnTimer = 0;
-    enemiesToSpawn = 0;
+    enemiesKilled = 0;
     player;
+    spawnSpeed = 3;
+    cockroachSpawnRate = 1;
 
     startWave() {
-        const numberOfEnemies = this.wave + 2; // change enemy amount here
-        this.enemiesToSpawn = numberOfEnemies;
-        this.enemiesLeft = numberOfEnemies;
+        console.log("Wave: " + this.wave)
+        this.increaseEnemyWave += 5; //je moet 5 enemies meer killen voordat nieuwe wave start
+        this.enemiesLeftBeforeNewWave = this.increaseEnemyWave;
+        this.spawnSpeed = this.spawnSpeed - 0.3; //elke wave spawnen enemies 0.3 sneller
+
+        this.currentWaveLabel.setCurrentWave(this.wave);
     }
 
     onPreUpdate(engine, delta) {
-        this.spawnTimer += delta / 1000; // change spawn time here
+        this.spawnTimer += delta / 1000;
 
-        if (this.enemiesToSpawn > 0 && this.spawnTimer >= 1) {
+        const timeBetweenSpawns = this.spawnSpeed / this.cockroachSpawnRate;
+
+        while (this.spawnTimer >= timeBetweenSpawns) {
             const enemy = new Cockroach(this.wave, this.player); //change enemy here
             this.add(enemy);
-            this.enemiesToSpawn--;
-            this.spawnTimer = 0;
+            this.spawnTimer -= timeBetweenSpawns;
         }
     }
 
     onEnemyKilled() {
-        this.enemiesLeft--;
-        if (this.enemiesLeft === 0) {
+        this.enemiesLeftBeforeNewWave--;
+        this.enemiesKilled++;
+        console.log(this.enemiesKilled)
+        if (this.enemiesLeftBeforeNewWave === 0) {
             this.wave++;
-
             this.startWave();
         }
-
     }
 }
