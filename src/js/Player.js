@@ -34,8 +34,8 @@ export class Player extends Actor {
     }
 
     handleCollision(evt) {
-         // Pickup speedboost
-         if (evt.other.name === 'speedboost') {
+        // Pickup speedboost
+        if (evt.other.name === 'speedboost') {
             // Activate the speed boost
             console.log('picked up speedboost');
             evt.other.kill();
@@ -44,7 +44,7 @@ export class Player extends Actor {
             this.speedBoostActive = true;
         }
         // Pickup lifeboost
-        else if  (evt.other.name === 'lifeboost') {
+        else if (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
             evt.other.kill();
             this._lifes += 1;
@@ -125,18 +125,18 @@ export class Player extends Actor {
     }
 
     armPlayer() {
-        const weapon = new Bow( )
-        this.weapon = weapon
-        this.addChild(weapon)
+        const weapon = new Bow();
+        this.weapon = weapon;
+        this.addChild(weapon);
     }
 
-    turnWeapon(direction, ) {
+    turnWeapon(direction,) {
         if (direction == 1) {
             this.weapon.scale.x = 1
             this.weapon.pos.x = 30
             this.weapon.direction = 1
         }
-      
+
         if (direction == 0) {
             this.weapon.scale.x = -1
             this.weapon.pos.x = -30
