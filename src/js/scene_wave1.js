@@ -13,7 +13,6 @@ import { Reaper } from './reaper.js';
 import { Lich } from './lich.js';
 import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
-import { atk_speed_boost } from './atk_speed_boost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
 import {ScoreLabel} from "./scoreLabel.js";
@@ -60,7 +59,6 @@ export class Wave1 extends Scene {
 
 
         this.add(new Speedboost(400, 400));
-        this.add(new atk_speed_boost(400,500));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
