@@ -15,8 +15,13 @@ import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
+import {ScoreLabel} from "./scoreLabel.js";
 
 export class Wave1 extends Scene {
+    constructor() {
+        super();
+        this.scoreLabel = null;
+    }
     onInitialize(engine, gamepad) {
         console.log("Wave 1");
 
@@ -79,6 +84,9 @@ export class Wave1 extends Scene {
 
         this.lifeDisplay = new Life(this.player);
         this.add(this.lifeDisplay);
+
+        this.scoreLabel = new ScoreLabel(1125, 20);
+        this.add(this.scoreLabel);
 
         this.startWave()
 
