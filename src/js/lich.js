@@ -3,10 +3,11 @@ import { Resources } from './resources.js';
 import { LichProjectile } from "./lich-projectile.js";
 import { Enemies } from "./enemies.js";
 import { enemyGroup } from "./collisionGroups.js";
+import { WeaponProjectile } from "./weaponProjectile.js";
 
 export class Lich extends Enemies {
     constructor(player) {
-        super(Resources.LichRight1.width / 1.5, Resources.LichRight1.height / 1.2);
+        super(Resources.Lich1.width / 1.5, Resources.Lich1.height / 1.2);
         this.player = player;
         this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
@@ -17,15 +18,29 @@ export class Lich extends Enemies {
         this.attackTimerActive = false;
         this.isAttacking = false;
         this.body.group = enemyGroup;
+        this.lives = 2; // Initialize lives
+
+        // Create the blood overlay actor
+        this.bloodOverlay = new Actor({
+            width: Resources.LichBlood1.width / 1.5,
+            height: Resources.LichBlood1.height / 1.2
+        });
+        this.bloodOverlay.graphics.use(Resources.LichBlood1.toSprite());
+        this.bloodOverlay.graphics.opacity = 0; // Start with invisible blood overlay
     }
 
     onInitialize(engine) {
         let capsule = new CompositeCollider([
             Shape.Box(60, 100, new Vector(0.48, 0.35)),
-        ])
-        this.collider.set(capsule)
+        ]);
+        this.collider.set(capsule);
         this.engine = engine;
         this.pos = new Vector(1350, 100); // spawn position
+
+        // Add blood overlay as a child actor
+        this.addChild(this.bloodOverlay);
+        this.bloodOverlay.pos = new Vector(0, 0); // Adjust position if necessary
+
         this.toggleSprite();
 
         this.timer = new Timer({
@@ -35,18 +50,30 @@ export class Lich extends Enemies {
         });
         engine.add(this.timer);
         this.timer.start();
+
+        this.on('precollision', (event) => this.handleCollision(event));
     }
 
     toggleSprite() {
         if (!this.isAttacking) {
-            if (this.isFacingRight) {
-                this.graphics.use(Resources.LichRight1.toSprite());
-            } else {
-                this.graphics.use(Resources.LichLeft1.toSprite());
-            }
+            let sprite = Resources.Lich1.toSprite();
+            sprite.flipHorizontal = !this.isFacingRight; // Flip sprite if not facing right
+            this.graphics.use(sprite);
         }
     }
 
+    handleCollision(event) {
+        if (event.other instanceof WeaponProjectile) {
+            console.log(this.lives)
+            this.lives -= 1;
+            if (this.lives === 1) {
+                this.bloodOverlay.graphics.opacity = 1; // Make blood overlay visible
+            }
+            if (this.lives <= 0) {
+                this.kill();
+            }
+        }
+    }
 
     update(engine, delta) {
         super.update(engine, delta);
@@ -94,30 +121,28 @@ export class Lich extends Enemies {
                         this.engine.add(projectile);
                     }
 
-                    if (this.isFacingRight) {
-                        if (this.attackPhase === 0) {
-                            this.graphics.use(Resources.LichRight1.toSprite());
-                        } else if (this.attackPhase === 1) {
-                            this.graphics.use(Resources.LichRight2.toSprite());
-                        } else if (this.attackPhase === 2) {
-                            this.graphics.use(Resources.LichRight3.toSprite());
-                        } else if (this.attackPhase === 3) {
-                            this.graphics.use(Resources.LichRight4.toSprite());
-                        } else if (this.attackPhase === 4) {
-                            this.graphics.use(Resources.LichRight5.toSprite());
-                        }
-                    } else {
-                        if (this.attackPhase === 0) {
-                            this.graphics.use(Resources.LichLeft1.toSprite());
-                        } else if (this.attackPhase === 1) {
-                            this.graphics.use(Resources.LichLeft2.toSprite());
-                        } else if (this.attackPhase === 2) {
-                            this.graphics.use(Resources.LichLeft3.toSprite());
-                        } else if (this.attackPhase === 3) {
-                            this.graphics.use(Resources.LichLeft4.toSprite());
-                        } else if (this.attackPhase === 4) {
-                            this.graphics.use(Resources.LichLeft5.toSprite());
-                        }
+                    let sprite;
+                    switch (this.attackPhase) {
+                        case 0:
+                            sprite = Resources.Lich1.toSprite();
+                            break;
+                        case 1:
+                            sprite = Resources.Lich2.toSprite();
+                            break;
+                        case 2:
+                            sprite = Resources.Lich3.toSprite();
+                            break;
+                        case 3:
+                            sprite = Resources.Lich4.toSprite();
+                            break;
+                        case 4:
+                            sprite = Resources.Lich5.toSprite();
+                            break;
+                    }
+
+                    if (sprite) {
+                        sprite.flipHorizontal = !this.isFacingRight;
+                        this.graphics.use(sprite);
                     }
                 }
             });
