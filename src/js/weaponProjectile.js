@@ -1,8 +1,8 @@
 import { Actor, Vector } from "excalibur"
 import { Resources } from './resources'
-import {Cockroach} from "./cockroach.js";
-import {Lich} from "./lich.js";
-import {Reaper} from "./reaper.js";
+import { Cockroach } from "./cockroach.js";
+import { Lich } from "./lich.js";
+import { Reaper } from "./reaper.js";
 
 export class WeaponProjectile extends Actor {
     constructor(x, y, sprite, scaleX, scaleY, velX, velY, angVel, direction, width, height) {
@@ -33,7 +33,9 @@ export class WeaponProjectile extends Actor {
             event.other.kill();
             this.kill();
             engine.addPoints(20);
+            engine.currentScene.onEnemyKilled();
         }
+
         if (event.other instanceof Lich) {
             event.other.stopAttackTimer();
             event.other.kill();
