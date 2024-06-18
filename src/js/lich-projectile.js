@@ -25,8 +25,9 @@ export class LichProjectile extends Actor {
         super.update(engine, delta);
 
         // Remove projectile when it leaves the screen
-        if (this.pos.x < 0 || this.pos.x > engine.drawWidth || this.pos.y < 0 || this.pos.y > engine.drawHeight) {
-            this.kill();
-        }
+        //     if (this.pos.x < 0 || this.pos.x > engine.drawWidth || this.pos.y < 0 || this.pos.y > engine.drawHeight) {
+        //         this.kill();
+        //     }
+        // 
     }
 }
