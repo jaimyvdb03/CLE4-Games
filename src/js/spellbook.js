@@ -6,6 +6,8 @@ export class Spellbook extends Actor {
     constructor(x,y) {
         super({x,y, width: Resources.Spellbook.width, height: Resources.Spellbook.height })
         this.direction = 1
+        this.shootCooldown = 300
+        this.lastShotTime = 1000
     }
 
     onInitialize(engine) {
@@ -16,7 +18,9 @@ export class Spellbook extends Actor {
     } 
 
     onPreUpdate(engine) {
-        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+        this.currentTime = Date.now()
+        if (engine.input.keyboard.wasPressed(Keys.Space) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
+            this.lastShotTime = this.currentTime
             if (this.direction === 1) {
                 this.scaleX = 0.1
             } else {

@@ -18,8 +18,11 @@ export class Game extends Engine {
     }
 
     addPoints(addedPoints) {
-        this.points += addedPoints
-        console.log(`${this.points} punten!`)
+        this.points += addedPoints;
+        const currentScene = this.currentScene;
+        if (currentScene && currentScene.scoreLabel) {
+            currentScene.scoreLabel.changeText(this.points);
+        }
     }
 
 
