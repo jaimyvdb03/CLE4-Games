@@ -122,6 +122,20 @@ export class Player extends Actor {
         if (this.joystickMoved) {
             this.turnWeapon(xspeed);
         }
+
+        // Player blijft in het scherm, horizontaal
+        if (this.pos.x < this.width / 2) {
+            this.pos.x = this.width / 2;
+        } else if (this.pos.x > 2560 - this.width / 2) {
+            this.pos.x = 2560 - this.width / 2;
+        }
+
+        // Player blijft in het scherm, verticaal
+        if (this.pos.y < this.height / 2) {
+            this.pos.y = this.height / 2;
+        } else if (this.pos.y > 720 - this.height / 2) {
+            this.pos.y = 720 - this.height / 2;
+        }
     }
 
     armPlayer() {
