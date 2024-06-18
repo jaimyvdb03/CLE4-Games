@@ -1,4 +1,4 @@
-import { Actor, Vector, Keys, CollisionType, Input } from "excalibur";
+import {Actor, Vector, Keys, CollisionType, Input, Axes, Buttons} from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Bow } from "./bow.js";
@@ -65,6 +65,8 @@ export class Player extends Actor {
     }
 
     onPreUpdate(engine, delta) {
+
+        // Keyboard input
         let xspeed = 0;
         let yspeed = 0;
 
@@ -92,35 +94,33 @@ export class Player extends Actor {
 
         }
 
-        // Gamepad input
-        if (this.gamepad) {
-            const leftStickX = this.gamepad.axes[0]; // X-axis of left stick
-            const leftStickY = this.gamepad.axes[1]; // Y-axis of left stick
-
-            // Apply a deadzone to prevent drift when the stick is near the center
-            const deadzone = 0.1;
-            if (Math.abs(leftStickX) > deadzone || Math.abs(leftStickY) > deadzone) {
-                this.joystickMoved = true; // Joystick moved flag
-            } else {
-                this.joystickMoved = false; // Joystick back to center
-            }
-
-            // Calculate speed based on joystick position
-            xspeed = leftStickX * 350 * this.speedMultiplier;
-            yspeed = leftStickY * 350 * this.speedMultiplier;
-
-            // Flip graphics based on movement direction
-            if (xspeed !== 0) {
-                this.graphics.flipHorizontal = xspeed > 0;
-            }
-        }
-
-        // Set velocity based on computed speeds
         this.vel = new Vector(xspeed, yspeed);
 
-        // Update player direction only if joystick has moved
-        if (this.joystickMoved) {
-            this.turnWeapon(xspeed);
+        //gamepad movement
+        if (!engine.mygamepad) {
+            return
+        }
+        // beweging
+        const x = engine.mygamepad.getAxes(Axes.LeftStickX)
+        const y = engine.mygamepad.getAxes(Axes.LeftStickY)
+        this.vel = new Vector(x * 350* this.speedMultiplier, y * 350* this.speedMultiplier)
+
+        if (this.vel.x > 0) {
+            this.graphics.flipHorizontal = true;
+            this.turnWeapon(1)
+        }
+        if (this.vel.x < 0) {
+            this.graphics.flipHorizontal = false;
+            this.turnWeapon(0)
+        }
+
+        // schieten, springen
+        if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
+            console.log('test')
+        }
+        // Check for shooting with R1 button
+        if (engine.mygamepad.isButtonPressed(Buttons.LeftTrigger)) {
+            console.log('phew pauw')
         }
     }
 
