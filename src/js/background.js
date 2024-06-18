@@ -30,5 +30,6 @@ export class Background extends Actor {
     ])
         this.body.collisionType = CollisionType.Fixed
         this.collider.set(map1)
+        console.warn = () => { };
     }
 }
