@@ -38,12 +38,12 @@ export class WeaponProjectile extends Actor {
 
         if (event.other instanceof Lich) {
             event.other.stopAttackTimer();
-            event.other.kill();
+            //event.other.kill();
             this.kill();
             engine.addPoints(40);
         }
         if (event.other instanceof Reaper) {
-            event.other.kill();
+            //event.other.kill();
             this.kill();
             engine.addPoints(30);
         }
