@@ -27,8 +27,8 @@ export class Game extends Engine {
 
 
 
-    //game.js naar scene 1
-    startGame() {
+   //game.js naar scene 1
+   startGame() {
         console.log("Start de game!");
 
         this.add('wave1', new Wave1());
@@ -40,7 +40,6 @@ export class Game extends Engine {
             console.log("gamepad detected")
             this.mygamepad = connectevent.gamepad
         })
-
     }
 }
 

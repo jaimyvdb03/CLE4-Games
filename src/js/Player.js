@@ -109,6 +109,12 @@ export class Player extends Actor {
         }
     }
 
+    armPlayer() {
+        const weapon = new Bow();
+        this.weapon = weapon;
+        this.addChild(weapon);
+    }
+    
     turnWeapon(direction,) {
         if (direction == 1) {
             this.weapon.scale.x = 1
