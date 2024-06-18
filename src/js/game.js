@@ -17,15 +17,6 @@ export class Game extends Engine {
 
     }
 
-    waitForGamepad() {
-        console.log("Waiting for gamepad connection...");
-
-        window.addEventListener('gamepadconnected', (event) => {
-            console.log('Gamepad connected:', event.gamepad);
-            this.startGame(event.gamepad);
-        });
-    }
-
     addPoints(addedPoints) {
         this.points += addedPoints
         console.log(`${this.points} punten!`)
@@ -34,12 +25,18 @@ export class Game extends Engine {
 
 
     //game.js naar scene 1
-    startGame(gamepad) {
+    startGame() {
         console.log("Start de game!");
 
         this.add('wave1', new Wave1());
         // Start with the intro scene
         this.goToScene('wave1');
+
+        this.input.gamepads.enabled = true
+        this.input.gamepads.on('connect', (connectevent) => {
+            console.log("gamepad detected")
+            this.mygamepad = connectevent.gamepad
+        })
 
     }
 }

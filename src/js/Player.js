@@ -1,4 +1,4 @@
-import { Actor, Vector, Keys, CollisionType, Input } from "excalibur";
+import { Actor, Vector, Keys, CollisionType, Input, Buttons, Axes } from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Bow } from "./bow.js";
@@ -15,7 +15,6 @@ export class Player extends Actor {
         this._lifes = 4; // Initialize lifes from constructor parameter
         this.gamepad = gamepad; // Store the gamepad instance
         this.joystickMoved = false; // Flag to track if joystick moved
-        console.log(this._lifes);
     }
 
     // Getter for lifes
@@ -52,82 +51,62 @@ export class Player extends Actor {
         } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
             this._lifes -= 1;
             console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
-
-        } else if (evt.other.name === 'lifeboost') {
-            console.log('picked up lifeboost');
-            evt.other.kill();
-            this._lifes += 1;
-            console.log(this._lifes)
-        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
-            this._lifes -= 1;
-
+            if (this._lifes <= 0) {
+                console.log('Collided with an enemy');
+                this.kill();
+            }
         }
     }
 
     onPreUpdate(engine, delta) {
-        let xspeed = 0;
-        let yspeed = 0;
 
-        // Keyboard input
-        if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
-            yspeed = -350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
+         // Keyboard input
+         let xspeed = 0;
+         let yspeed = 0;
+ 
+         // Keyboard input
+         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
+             yspeed = -350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
+             yspeed = 350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
+             xspeed = -350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = false;
+             this.turnWeapon(0)
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
+             xspeed = 350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+             this.turnWeapon(1)
+ 
+         }
+
+         this.vel = new Vector(xspeed, yspeed);
+
+        //gamepad movement
+        if (!engine.mygamepad) { 
+            return
         }
+        // beweging
+        const x = engine.mygamepad.getAxes(Axes.LeftStickX)
+        const y = engine.mygamepad.getAxes(Axes.LeftStickY)
+        this.vel = new Vector(x * 350* this.speedMultiplier, y * 350* this.speedMultiplier)
 
-        if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
-            yspeed = 350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
+        // schieten, springen
+        if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
+            console.log('test')
         }
-
-        if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
-            xspeed = -350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = false;
-            this.turnWeapon(0)
+        // Check for shooting with R1 button
+        if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
+            console.log('phew pauw')
         }
-
-        if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
-            xspeed = 350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
-            this.turnWeapon(1)
-
-        }
-
-        // Gamepad input
-        if (this.gamepad) {
-            const leftStickX = this.gamepad.axes[0]; // X-axis of left stick
-            const leftStickY = this.gamepad.axes[1]; // Y-axis of left stick
-
-            // Apply a deadzone to prevent drift when the stick is near the center
-            const deadzone = 0.1;
-            if (Math.abs(leftStickX) > deadzone || Math.abs(leftStickY) > deadzone) {
-                this.joystickMoved = true; // Joystick moved flag
-            } else {
-                this.joystickMoved = false; // Joystick back to center
-            }
-
-            // Calculate speed based on joystick position
-            xspeed = leftStickX * 350 * this.speedMultiplier;
-            yspeed = leftStickY * 350 * this.speedMultiplier;
-
-            // Flip graphics based on movement direction
-            if (xspeed !== 0) {
-                this.graphics.flipHorizontal = xspeed > 0;
-            }
-        }
-
-        // Set velocity based on computed speeds
-        this.vel = new Vector(xspeed, yspeed);
-
-        // Update player direction only if joystick has moved
-        if (this.joystickMoved) {
-            this.turnWeapon(xspeed);
-        }
-    }
-
-    armPlayer() {
-        const weapon = new ThrowingAxe();
-        this.weapon = weapon;
-        this.addChild(weapon);
     }
 
     armPlayer() {

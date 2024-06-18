@@ -28,5 +28,21 @@ export class Bow extends Actor {
                 Resources.Arrow.width / 15, Resources.Arrow.height /15)
             engine.add(projectile)
         }
+
+        //  // Check for shooting with R1 button
+        //  if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
+        //     // this.weapon.shoot();
+        //     console.log('phew pauw')
+        //     if (this.direction === 1) {
+        //         this.scaleX = 0.15  
+        //     } else {
+        //         this.scaleX = -0.15
+        //     }
+        //     const projectile = new WeaponProjectile(
+        //         // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
+        //         this.parent.pos.x, this.parent.pos.y, Resources.Arrow, this.scaleX, 0.15, 800, 0, 0, this.direction,
+        //         Resources.Arrow.width / 15, Resources.Arrow.height /15)
+        //     engine.add(projectile)
+        // }
     }   
 }
