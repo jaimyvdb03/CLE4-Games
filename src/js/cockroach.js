@@ -39,13 +39,11 @@ export class Cockroach extends Enemies {
         this.timer.start();
 
         //pos
+        const spawnX = 1330 + Math.random() * (1370 - 1330);
         const spawnPositions = [
-            new Vector(185, -100),
-            new Vector(1350, -100),
-            new Vector(2455, -100)
+            new Vector(spawnX, -100)
         ];
-        const randomIndex = Math.floor(Math.random() * spawnPositions.length);
-        this.pos = spawnPositions[randomIndex];
+        this.pos = spawnPositions[0];
     }
 
     toggleSprite() {
