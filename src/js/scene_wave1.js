@@ -15,7 +15,10 @@ import { Speedboost } from './Speedboost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
+
 import { WaveLabel } from './waveLabel.js';
+import {ScoreLabel} from "./scoreLabel.js";
+
 
 export class Wave1 extends Scene {
     constructor() {
@@ -23,6 +26,7 @@ export class Wave1 extends Scene {
         this.scoreLabel = null;
         this.currentWaveLabel = null;
         this.totalWaves = 5;
+
     }
     onInitialize(engine, gamepad) {
         // Adding background
@@ -86,9 +90,11 @@ export class Wave1 extends Scene {
         this.add(this.lifeDisplay);
 
 
-
         this.currentWaveLabel = new WaveLabel(600, 20, this.totalWaves);
         this.add(this.currentWaveLabel);
+      
+        this.scoreLabel = new ScoreLabel(1125, 20);
+        this.add(this.scoreLabel);
 
         this.startWave()
 
