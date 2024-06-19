@@ -61,9 +61,6 @@ export class Wave1 extends Scene {
         this.add(hotel);
 
 
-        this.add(new atk_speed_boost(400, 500));
-
-
         this.player = new Player(1350, 300, gamepad);
         this.add(this.player);
 
@@ -143,6 +140,10 @@ export class Wave1 extends Scene {
             const speedboost = new Speedboost(spawnX, spawnY);
             this.add(speedboost);
         }
+        else if (type === 'attack') {
+            const attackboost = new atk_speed_boost(spawnX, spawnY);
+            this.add(attackboost);
+        }
     }
 
     onEnemyKilled() {
@@ -159,6 +160,9 @@ export class Wave1 extends Scene {
 
         if (this.enemiesKilled % 15 === 0) {
             this.spawnPowerUp('speed');
+        }
+        if (this.enemiesKilled % 15 === 0) {
+            this.spawnPowerUp('attack');
         }
     }
 }
