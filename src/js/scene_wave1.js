@@ -61,7 +61,7 @@ export class Wave1 extends Scene {
         this.add(hotel);
 
 
-        this.player = new Player(1350, 300, gamepad);
+        this.player = new Player(1350, 500, gamepad);
         this.add(this.player);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
