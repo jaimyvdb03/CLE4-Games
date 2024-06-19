@@ -1,6 +1,6 @@
-import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode, Scene, Axis, BoundingBox, Label } from "excalibur"
-import { Resources, ResourceLoader } from './resources.js'
+import '../css/style.css';
+import { Actor, Engine, Vector, DisplayMode, Scene, Axis, BoundingBox, Label } from "excalibur";
+import { Resources, ResourceLoader } from './resources.js';
 import { Background } from './background.js';
 import { Player } from './Player.js';
 import { Bush } from './map-objects/bush.js';
@@ -16,9 +16,9 @@ import { atk_speed_boost } from './atk_speed_boost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
-
 import { WaveLabel } from './waveLabel.js';
 import {ScoreLabel} from "./scoreLabel.js";
+import {highScoreLabel} from "./highscoreLabel.js";
 
 
 export class Wave1 extends Scene {
@@ -27,8 +27,8 @@ export class Wave1 extends Scene {
         this.scoreLabel = null;
         this.currentWaveLabel = null;
         this.totalWaves = 5;
-
     }
+
 
     resetScene() {
 
@@ -86,39 +86,28 @@ export class Wave1 extends Scene {
         const hotel = new Hotel();
         this.add(hotel);
 
-        this.add(new Speedboost(400, 400));
-        this.add(new atk_speed_boost(400, 500));
-        this.add(new Lifeboost(600, 400));
-        this.add(new Lifeboost(630, 400));
-        this.add(new Lifeboost(660, 400));
 
         this.player = new Player(1350, 300);
         this.add(this.player);
+
+        const speedboost = new Speedboost(1400, 300);
+        this.add(speedboost);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.camera.strategy.limitCameraBounds(boundingBox);
 
-        // this.camera.zoom = 1.1;
-        // this.camera.strategy.lockToActor(player);
-        let lich = new Lich(this.player);
-        this.add(lich);
-
-        // let roach = new Cockroach(player);
-        // this.add(roach);
-
-        let reaper = new Reaper(this.player);
-        this.add(reaper);
-
         this.lifeDisplay = new Life(this.player);
         this.add(this.lifeDisplay);
-
 
         this.currentWaveLabel = new WaveLabel(600, 20, this.totalWaves);
         this.add(this.currentWaveLabel);
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
+  
+        this.highscore = new highScoreLabel(970, 80);
+        this.add(this.highscore);
 
         this.startWave()
     }
@@ -136,20 +125,24 @@ export class Wave1 extends Scene {
     }
 
     wave = 1;
-    enemiesLeftBeforeNewWave = 10;
-    increaseEnemyWave = 10;
+    enemiesLeftBeforeNewWave = 5;
+    increaseEnemyWave = 5;
     spawnTimer = 0;
     enemiesKilled = 0;
     player;
-    spawnSpeed = 3;
+    spawnSpeed = 4;
     cockroachSpawnRate = 1;
     reset;
 
     startWave() {
-        console.log("Wave: " + this.wave)
-        this.increaseEnemyWave += 5; //je moet 5 enemies meer killen voordat nieuwe wave start
+        if (this.wave === 5) {
+            console.log("WE ARE DONE");
+        }
+
+        console.log("Wave: " + this.wave);
+        this.increaseEnemyWave += 1; // Je moet 5 enemies meer killen voordat nieuwe wave start
         this.enemiesLeftBeforeNewWave = this.increaseEnemyWave;
-        this.spawnSpeed = this.spawnSpeed - 0.3; //elke wave spawnen enemies 0.3 sneller
+        this.spawnSpeed = this.spawnSpeed - 0.3; // Elke wave spawnen enemies 0.3 sneller
 
         this.currentWaveLabel.setCurrentWave(this.wave);
     }
@@ -160,19 +153,61 @@ export class Wave1 extends Scene {
         const timeBetweenSpawns = this.spawnSpeed / this.cockroachSpawnRate;
 
         while (this.spawnTimer >= timeBetweenSpawns) {
-            const enemy = new Cockroach(this.wave, this.player); //change enemy here
+            const spawnX = 1330 + Math.random() * (1370 - 1330);
+            const spawnY = -100;
+            const enemy = new Cockroach(this.wave, this.player, spawnX, spawnY); // Change enemy here
             this.add(enemy);
             this.spawnTimer -= timeBetweenSpawns;
+            if (this.enemiesKilled >= 5) {
+                console.log("special enemy")
+                const spawnX = 185
+                const spawnY = 50;
+                const enemy = new Cockroach(this.wave, this.player, spawnX, spawnY); // Change enemy here
+                this.add(enemy);
+            }
+            if (this.wave === 3) {
+                const spawnX = 2455
+                const spawnY = 50;
+                const enemy = new Cockroach(this.wave, this.player, spawnX, spawnY); // Change enemy here
+                this.add(enemy);
+            }
+        }
+    }
+
+    spawnPowerUp(type) {
+        const spawnX = 130 + Math.random() * (2500 - 130);
+        const spawnY = 420 + Math.random() * (650 - 420);
+
+        if (type === 'health') {
+            const lifeboost = new Lifeboost(spawnX, spawnY);
+            this.add(lifeboost);
+        } else if (type === 'speed') {
+            const speedboost = new Speedboost(spawnX, spawnY);
+            this.add(speedboost);
+        }
+        else if (type === 'attack') {
+            const attackboost = new atk_speed_boost(spawnX, spawnY);
+            this.add(attackboost);
         }
     }
 
     onEnemyKilled() {
         this.enemiesLeftBeforeNewWave--;
         this.enemiesKilled++;
-        console.log(this.enemiesKilled)
+        console.log(this.enemiesKilled);
         if (this.enemiesLeftBeforeNewWave === 0) {
             this.wave++;
             this.startWave();
+        }
+        if (this.enemiesKilled % 10 === 0) {
+            this.spawnPowerUp('health');
+        }
+
+        if (this.enemiesKilled % 15 === 0) {
+            this.spawnPowerUp('speed');
+        }
+        if (this.enemiesKilled % 15 === 0) {
+            this.spawnPowerUp('attack');
         }
     }
 }
