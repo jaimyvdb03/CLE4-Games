@@ -28,7 +28,7 @@ export class Player extends Actor {
         this.graphics.use(Resources.Player.toSprite());
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
-        this.armPlayer()
+        this.armPlayer();
         this.pos = new Vector(1350, 500);
     }
 
@@ -52,60 +52,59 @@ export class Player extends Actor {
             this._lifes -= 1;
             console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
             if (this._lifes <= 0) {
-                console.log('Collided with an enemy');
-                this.kill();
+                console.log('You died :(');
+                this.engine.goToScene('gameOver');
             }
         }
     }
 
     onPreUpdate(engine, delta) {
 
-        // Keyboard input
-        let xspeed = 0;
-        let yspeed = 0;
+         // Keyboard input
+         let xspeed = 0;
+         let yspeed = 0;
+ 
+         // Keyboard input
+         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
+             yspeed = -350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
+             yspeed = 350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
+             xspeed = -350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = false;
+             this.turnWeapon(0);
+         }
+ 
+         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
+             xspeed = 350 * this.speedMultiplier;
+             this.graphics.flipHorizontal = true;
+             this.turnWeapon(1);
+         }
 
-        // Keyboard input
-        if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
-            yspeed = -350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
-        }
+         this.vel = new Vector(xspeed, yspeed);
 
-        if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
-            yspeed = 350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
-        }
-
-        if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
-            xspeed = -350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = false;
-            this.turnWeapon(0)
-        }
-
-        if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
-            xspeed = 350 * this.speedMultiplier;
-            this.graphics.flipHorizontal = true;
-            this.turnWeapon(1)
-
-        }
-
-        this.vel = new Vector(xspeed, yspeed);
-
-        //gamepad movement
-        if (!engine.mygamepad) {
-            return
+        // gamepad movement
+        if (!engine.mygamepad) { 
+            return;
         }
         // beweging
-        const x = engine.mygamepad.getAxes(Axes.LeftStickX)
-        const y = engine.mygamepad.getAxes(Axes.LeftStickY)
-        this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier)
+        const x = engine.mygamepad.getAxes(Axes.LeftStickX);
+        const y = engine.mygamepad.getAxes(Axes.LeftStickY);
+        this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier);
 
         // schieten, springen
         if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
-            console.log('test')
+            console.log('test');
         }
         // Check for shooting with R1 button
         if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
-            console.log('phew pauw')
+            console.log('phew pauw');
         }
 
         // Player blijft in het scherm, horizontaal
@@ -124,22 +123,23 @@ export class Player extends Actor {
     }
 
     armPlayer() {
-        const weapon = new Bow();
+        const weapon = new Spellbook();
         this.weapon = weapon;
         this.addChild(weapon);
     }
 
-    turnWeapon(direction,) {
+    
+    turnWeapon(direction) {
         if (direction == 1) {
-            this.weapon.scale.x = 1
-            this.weapon.pos.x = 30
-            this.weapon.direction = 1
+            this.weapon.scale.x = 1;
+            this.weapon.pos.x = 30;
+            this.weapon.direction = 1;
         }
 
         if (direction == 0) {
-            this.weapon.scale.x = -1
-            this.weapon.pos.x = -30
-            this.weapon.direction = -1
+            this.weapon.scale.x = -1;
+            this.weapon.pos.x = -30;
+            this.weapon.direction = -1;
         }
     }
 }

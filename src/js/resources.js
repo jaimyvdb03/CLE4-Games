@@ -41,6 +41,7 @@ const Resources = {
     ReaperBlood1: new ImageSource('images/reaper-blood1.png'),
     ReaperBlood2: new ImageSource('images/reaper-blood2.png'),
     ReaperBlood3: new ImageSource('images/reaper-blood3.png'),
+    Deathbanner: new ImageSource('images/deathbanner.png'),
 
 }
 const ResourceLoader = new Loader([
@@ -82,7 +83,8 @@ const ResourceLoader = new Loader([
     Resources.SpellbookProjectile,
     Resources.ReaperBlood1,
     Resources.ReaperBlood2,
-    Resources.ReaperBlood3
+    Resources.ReaperBlood3,
+    Resources.Deathbanner,
 ])
 
 export { Resources, ResourceLoader }
