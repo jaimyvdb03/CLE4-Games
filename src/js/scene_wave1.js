@@ -17,7 +17,9 @@ import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
 import { WaveLabel } from './waveLabel.js';
-import { ScoreLabel } from "./scoreLabel.js";
+import {ScoreLabel} from "./scoreLabel.js";
+import {highScoreLabel} from "./highscoreLabel.js";
+
 
 export class Wave1 extends Scene {
     constructor() {
@@ -64,6 +66,9 @@ export class Wave1 extends Scene {
         this.player = new Player(1350, 300, gamepad);
         this.add(this.player);
 
+        const speedboost = new Speedboost(1400, 300);
+        this.add(speedboost);
+
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.camera.strategy.limitCameraBounds(boundingBox);
@@ -76,6 +81,9 @@ export class Wave1 extends Scene {
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
+
+        this.highscore = new highScoreLabel(970, 80);
+        this.add(this.highscore);
 
         this.startWave();
     }
