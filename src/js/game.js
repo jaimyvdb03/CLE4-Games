@@ -2,6 +2,7 @@ import '../css/style.css';
 import { Actor, Engine, Vector, DisplayMode, Input } from "excalibur";
 import { Resources, ResourceLoader } from './resources.js';
 import { Wave1 } from './scene_wave1.js';
+import { Game_over_Scene } from './scene_gameOver.js';
 
 export class Game extends Engine {
     constructor() {
@@ -32,6 +33,7 @@ export class Game extends Engine {
         console.log("Start de game!");
 
         this.add('wave1', new Wave1());
+        this.add('gameOver', new Game_over_Scene());
         // Start with the intro scene
         this.goToScene('wave1');
 
