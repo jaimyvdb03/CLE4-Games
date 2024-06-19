@@ -19,6 +19,7 @@ import { WeaponProjectile } from './weaponProjectile.js';
 
 import { WaveLabel } from './waveLabel.js';
 import {ScoreLabel} from "./scoreLabel.js";
+import {highScoreLabel} from "./highscoreLabel.js";
 
 
 export class Wave1 extends Scene {
@@ -96,6 +97,9 @@ export class Wave1 extends Scene {
       
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
+
+        this.highscore = new highScoreLabel(970, 80);
+        this.add(this.highscore);
 
         this.startWave()
 
