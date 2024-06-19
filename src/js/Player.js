@@ -9,7 +9,7 @@ import { LichProjectile } from "./lich-projectile.js";
 
 export class Player extends Actor {
     constructor(x, y, gamepad) {
-        super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
+        super({ x, y, width: Resources.Player.width / 2, height: Resources.Player.height });
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.speedMultiplier = 1; // Default speed multiplier
         this._lifes = 4; // Initialize lifes from constructor parameter
@@ -127,6 +127,7 @@ export class Player extends Actor {
         this.weapon = weapon;
         this.addChild(weapon);
     }
+
     
     turnWeapon(direction) {
         if (direction == 1) {
