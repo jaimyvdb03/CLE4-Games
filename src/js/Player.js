@@ -9,7 +9,7 @@ import { LichProjectile } from "./lich-projectile.js";
 
 export class Player extends Actor {
     constructor(x, y, gamepad) {
-        super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
+        super({ x, y, width: Resources.Player.width / 2, height: Resources.Player.height });
         this.body.collisionType = CollisionType.Active; // Active collision type
         this.speedMultiplier = 1; // Default speed multiplier
         this._lifes = 4; // Initialize lifes from constructor parameter
@@ -60,44 +60,44 @@ export class Player extends Actor {
 
     onPreUpdate(engine, delta) {
 
-         // Keyboard input
-         let xspeed = 0;
-         let yspeed = 0;
- 
-         // Keyboard input
-         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
-             yspeed = -350 * this.speedMultiplier;
-             this.graphics.flipHorizontal = true;
-         }
- 
-         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
-             yspeed = 350 * this.speedMultiplier;
-             this.graphics.flipHorizontal = true;
-         }
- 
-         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
-             xspeed = -350 * this.speedMultiplier;
-             this.graphics.flipHorizontal = false;
-             this.turnWeapon(0)
-         }
- 
-         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
-             xspeed = 350 * this.speedMultiplier;
-             this.graphics.flipHorizontal = true;
-             this.turnWeapon(1)
- 
-         }
+        // Keyboard input
+        let xspeed = 0;
+        let yspeed = 0;
 
-         this.vel = new Vector(xspeed, yspeed);
+        // Keyboard input
+        if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
+            yspeed = -350 * this.speedMultiplier;
+            this.graphics.flipHorizontal = true;
+        }
+
+        if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
+            yspeed = 350 * this.speedMultiplier;
+            this.graphics.flipHorizontal = true;
+        }
+
+        if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
+            xspeed = -350 * this.speedMultiplier;
+            this.graphics.flipHorizontal = false;
+            this.turnWeapon(0)
+        }
+
+        if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
+            xspeed = 350 * this.speedMultiplier;
+            this.graphics.flipHorizontal = true;
+            this.turnWeapon(1)
+
+        }
+
+        this.vel = new Vector(xspeed, yspeed);
 
         //gamepad movement
-        if (!engine.mygamepad) { 
+        if (!engine.mygamepad) {
             return
         }
         // beweging
         const x = engine.mygamepad.getAxes(Axes.LeftStickX)
         const y = engine.mygamepad.getAxes(Axes.LeftStickY)
-        this.vel = new Vector(x * 350* this.speedMultiplier, y * 350* this.speedMultiplier)
+        this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier)
 
         // schieten, springen
         if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
@@ -128,7 +128,7 @@ export class Player extends Actor {
         this.weapon = weapon;
         this.addChild(weapon);
     }
-    
+
     turnWeapon(direction,) {
         if (direction == 1) {
             this.weapon.scale.x = 1
