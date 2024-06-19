@@ -12,6 +12,7 @@ import { Cockroach } from './cockroach.js';
 import { Reaper } from './reaper.js';
 import { Lich } from './lich.js';
 import { Speedboost } from './Speedboost.js';
+import { atk_speed_boost } from './atk_speed_boost.js';
 import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
@@ -61,8 +62,8 @@ export class Wave1 extends Scene {
         const hotel = new Hotel();
         this.add(hotel);
 
-
         this.add(new Speedboost(400, 400));
+        this.add(new atk_speed_boost(400, 500));
         this.add(new Lifeboost(600, 400));
         this.add(new Lifeboost(630, 400));
         this.add(new Lifeboost(660, 400));
