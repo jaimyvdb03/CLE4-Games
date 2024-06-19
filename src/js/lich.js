@@ -87,7 +87,7 @@ export class Lich extends Enemies {
         // check hoe ver de player is
         const distanceToPlayer = this.pos.distance(this.player.pos);
 
-        if (distanceToPlayer <= 650) {
+        if (distanceToPlayer <= 400) {
             this.vel = new Vector(0, 0); // stop met bewegen
             this.facePlayer();
             this.startAttackAnimation();
