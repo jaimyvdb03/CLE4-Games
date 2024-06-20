@@ -58,14 +58,6 @@ export class Wave1 extends Scene {
         const background1 = new Background;
         this.add(background1);
 
-        // Adding bushes
-        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)); // x,y,width,height,image,anchor
-        this.add(bush1);
-        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)); // x,y,width,height,image,anchor
-        this.add(bush2);
-        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)); // x,y,width,height,image,anchor
-        this.add(bush3);
-
         // Adding fence
         const fence = new Fence();
         this.add(fence);
@@ -86,6 +78,9 @@ export class Wave1 extends Scene {
         const hotel = new Hotel();
         this.add(hotel);
 
+        // bush 1/3
+        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)); // x,y,width,height,image,anchor
+        this.add(bush3);
 
         this.player = new Player(1350, 300);
         this.add(this.player);
@@ -110,6 +105,12 @@ export class Wave1 extends Scene {
         this.add(this.highscore);
 
         this.startWave()
+
+        // Adding bushes 2/3
+        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)); // x,y,width,height,image,anchor
+        this.add(bush1);
+        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)); // x,y,width,height,image,anchor
+        this.add(bush2);
     }
 
     onInitialize() {
