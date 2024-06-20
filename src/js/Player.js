@@ -39,7 +39,6 @@ export class Player extends Actor {
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
         this.armPlayer();
-        this.pos = new Vector(1350, 500);
     }
 
     handleCollision(evt) {
@@ -77,6 +76,8 @@ export class Player extends Actor {
     }
 
     onPreUpdate(engine, delta) {
+return;
+
         // Keyboard input
         let xspeed = 0;
         let yspeed = 0;
@@ -84,6 +85,7 @@ export class Player extends Actor {
         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
             yspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
+
         }
     
         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
@@ -155,7 +157,7 @@ export class Player extends Actor {
         this.addChild(weapon);
     }
 
-    
+
     turnWeapon(direction) {
         if (direction == 1) {
             this.weapon.scale.x = 1;

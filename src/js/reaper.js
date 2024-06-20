@@ -5,7 +5,7 @@ import { enemyGroup } from "./collisionGroups.js";
 import { WeaponProjectile } from "./weaponProjectile.js";
 
 export class Reaper extends Enemies {
-    constructor(player) {
+    constructor(wave, player, spawnX, spawnY) {
         super({
             width: Resources.ReaperDefault.width / 2,
             height: Resources.ReaperDefault.height
@@ -15,10 +15,11 @@ export class Reaper extends Enemies {
         this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
         this.isFacingRight = true;
-        this.speed = 50; // vaste snelheid
+        this.speed = 20; // vaste snelheid
         this.timeSinceLastChange = 0;
         this.body.group = enemyGroup;
         this.lives = 4;
+        this.pos = new Vector(spawnX, spawnY);
     }
 
     onInitialize(engine) {
@@ -28,7 +29,6 @@ export class Reaper extends Enemies {
         this.collider.set(capsule);
 
         this.engine = engine;
-        this.pos = new Vector(1350, 100);
         this.toggleSprite();
         this.timer = new Timer({
             interval: 500,

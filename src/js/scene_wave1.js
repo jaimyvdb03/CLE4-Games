@@ -87,7 +87,9 @@ export class Wave1 extends Scene {
         this.add(hotel);
 
 
+
         this.player = new Player(1350, 300);
+
         this.add(this.player);
 
         const atk = new atk_speed_boost(1400, 300);

@@ -32,7 +32,7 @@ export class WeaponProjectile extends Actor {
         if (event.other instanceof Cockroach) {
             event.other.kill();
             this.kill();
-            engine.addPoints(20);
+            engine.addPoints(10);
             engine.currentScene.onEnemyKilled();
         }
 
@@ -40,12 +40,12 @@ export class WeaponProjectile extends Actor {
             event.other.stopAttackTimer();
             //event.other.kill();
             this.kill();
-            engine.addPoints(40);
+            engine.addPoints(50);
         }
         if (event.other instanceof Reaper) {
             //event.other.kill();
             this.kill();
-            engine.addPoints(30);
+            engine.addPoints(100);
         }
     }
 }

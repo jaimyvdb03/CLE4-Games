@@ -3,6 +3,7 @@ import { Actor, Engine, Vector, DisplayMode, Input } from "excalibur";
 import { Resources, ResourceLoader } from './resources.js';
 import { Wave1 } from './scene_wave1.js';
 import { Game_over_Scene } from './scene_gameOver.js';
+import { Wave2 } from './scene_wave2.js';
 
 export class Game extends Engine {
     constructor() {
@@ -26,14 +27,15 @@ export class Game extends Engine {
 
 
 
-   //game.js naar scene 1
-   startGame() {
+    //game.js naar scene 1
+    startGame() {
         console.log("Start de game!");
 
         this.add('wave1', new Wave1());
+        this.add('wave2', new Wave2());
         this.add('gameOver', new Game_over_Scene());
         // Start with the intro scene
-        this.goToScene('wave1');
+        this.goToScene('wave2');
 
         this.input.gamepads.enabled = true
         this.input.gamepads.on('connect', (connectevent) => {
