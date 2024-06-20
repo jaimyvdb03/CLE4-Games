@@ -42,12 +42,4 @@ export class Game extends Engine {
         })
     }
 }
-
-//overige functie moeten naar scene 1 & camara lock op speler
-
-
-
-
-
-
 new Game();
