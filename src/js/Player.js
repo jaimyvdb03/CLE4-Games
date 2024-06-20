@@ -58,7 +58,7 @@ export class Player extends Actor {
             this.atkSpeedBoostActive = true;
             this.atkSpeedBoostEndTime = Date.now() + this.atkSpeedBoostDuration;
             this.weapon.setAttackSpeedBoost(true);
-        } 
+        }
         // Pickup lifeboost
         else if (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
@@ -76,43 +76,42 @@ export class Player extends Actor {
     }
 
     onPreUpdate(engine, delta) {
-return;
 
         // Keyboard input
         let xspeed = 0;
         let yspeed = 0;
-    
+
         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
             yspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
 
         }
-    
+
         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
             yspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
         }
-    
+
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = false;
             this.turnWeapon(0);
         }
-    
+
         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
             this.turnWeapon(1);
         }
-    
+
         this.vel = new Vector(xspeed, yspeed);
-    
+
         // Gamepad movement
         if (engine.mygamepad) {
             const x = engine.mygamepad.getAxes(Axes.LeftStickX);
             const y = engine.mygamepad.getAxes(Axes.LeftStickY);
             this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier);
-    
+
             // Shooting, jumping
             if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
                 console.log('test');
@@ -121,7 +120,7 @@ return;
                 console.log('phew pauw');
             }
         }
-    
+
         // Check speed boost timer
         if (this.speedBoostActive && Date.now() >= this.speedBoostEndTime) {
             console.log('Speed boost expired');
@@ -135,21 +134,21 @@ return;
             this.weapon.setAttackSpeedBoost(false);
             this.atkSpeedBoostActive = false;
         }
-    
-        // Boundary constraints
-        if (this.pos.x < this.width / 2) {
-            this.pos.x = this.width / 2;
-        } else if (this.pos.x > 2560 - this.width / 2) {
-            this.pos.x = 2560 - this.width / 2;
-        }
-    
-        if (this.pos.y < this.height / 2) {
-            this.pos.y = this.height / 2;
-        } else if (this.pos.y > 720 - this.height / 2) {
-            this.pos.y = 720 - this.height / 2;
-        }
+
+        // // Boundary constraints
+        // if (this.pos.x < this.width / 2) {
+        //     this.pos.x = this.width / 2;
+        // } else if (this.pos.x > 2560 - this.width / 2) {
+        //     this.pos.x = 2560 - this.width / 2;
+        // }
+
+        // if (this.pos.y < this.height / 2) {
+        //     this.pos.y = this.height / 2;
+        // } else if (this.pos.y > 720 - this.height / 2) {
+        //     this.pos.y = 720 - this.height / 2;
+        // }
     }
-    
+
 
     armPlayer() {
         const weapon = new Spellbook();
