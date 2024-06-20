@@ -66,8 +66,8 @@ export class Wave1 extends Scene {
         this.player = new Player(1350, 300, gamepad);
         this.add(this.player);
 
-        const speedboost = new Speedboost(1400, 300);
-        this.add(speedboost);
+        const atk = new atk_speed_boost(1400, 300);
+        this.add(atk);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
