@@ -29,18 +29,34 @@ export class Wave1 extends Scene {
         this.totalWaves = 5;
     }
 
-    onInitialize(engine, gamepad) {
-        // Adding background
-        const background1 = new Background();
-        this.add(background1);
 
-        // Adding bushes
-        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)); // x,y,width,height,image,anchor
-        this.add(bush1);
-        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)); // x,y,width,height,image,anchor
-        this.add(bush2);
-        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)); // x,y,width,height,image,anchor
-        this.add(bush3);
+    resetScene() {
+
+        this.reset = false
+        localStorage.removeItem('reset');
+
+        // Verwijder alle actoren
+        this.actors.forEach(actor => {
+            actor.kill();
+        });
+        
+        // Reset de variabelen
+        this.wave = 1;
+        this.enemiesLeftBeforeNewWave = 10;
+        this.increaseEnemyWave = 10;
+        this.spawnTimer = 0;
+        this.enemiesKilled = 0;
+        this.spawnSpeed = 3;
+        this.cockroachSpawnRate = 1;
+
+        // Voeg alle actoren opnieuw toe
+        this.makeActors()
+    }
+
+    makeActors() {
+        // background
+        const background1 = new Background;
+        this.add(background1);
 
         // Adding fence
         const fence = new Fence();
@@ -62,8 +78,13 @@ export class Wave1 extends Scene {
         const hotel = new Hotel();
         this.add(hotel);
 
+        // bush 1/3
+        const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)); // x,y,width,height,image,anchor
+        this.add(bush3);
 
-        this.player = new Player(1350, 300, gamepad);
+
+        this.player = new Player(1350, 300);
+
         this.add(this.player);
 
         const atk = new atk_speed_boost(1400, 300);
@@ -81,11 +102,29 @@ export class Wave1 extends Scene {
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
-
+  
         this.highscore = new highScoreLabel(970, 80);
         this.add(this.highscore);
 
-        this.startWave();
+        this.startWave()
+
+        // Adding bushes 2/3
+        const bush1 = new Bush(375, 380, 190, 210, Resources.Bush1, new Vector(0.5, 1)); // x,y,width,height,image,anchor
+        this.add(bush1);
+        const bush2 = new Bush(665, 380, 190, 210, Resources.Bush2, new Vector(0.5, 1)); // x,y,width,height,image,anchor
+        this.add(bush2);
+    }
+
+    onInitialize() {
+        // adding actors
+        this.makeActors()
+    }
+    
+    onActivate() {
+        this.reset = JSON.parse(localStorage.getItem('reset'));
+        if (this.reset) {
+            this.resetScene()
+        }
     }
 
     wave = 1;
@@ -96,6 +135,7 @@ export class Wave1 extends Scene {
     player;
     spawnSpeed = 4;
     cockroachSpawnRate = 1;
+    reset;
 
     startWave() {
         if (this.wave === 5) {

@@ -3,6 +3,7 @@ import { ImageSource, Sound, Resource, Loader } from 'excalibur'
 const Resources = {
     Fish: new ImageSource('images/fish.png'),
     Background1: new ImageSource('images/background1.png'),
+    Background2: new ImageSource('images/placeholder-map.png'),
     Bush1: new ImageSource('images/object-bush1.png'),
     Bush2: new ImageSource('images/object-bush2.png'),
     Bush3: new ImageSource('images/object-bush3.png'),
@@ -47,6 +48,7 @@ const Resources = {
 const ResourceLoader = new Loader([
     Resources.Player,
     Resources.Background1,
+    Resources.Background2,
     Resources.Bush1,
     Resources.Bush2,
     Resources.Bush3,

@@ -6,19 +6,20 @@ import { enemyGroup } from "./collisionGroups.js";
 import { WeaponProjectile } from "./weaponProjectile.js";
 
 export class Lich extends Enemies {
-    constructor(player) {
+    constructor(wave, player, spawnX, spawnY) {
         super(Resources.Lich1.width / 1.5, Resources.Lich1.height / 1.2);
         this.player = player;
         this.body.collisionType = CollisionType.Active;
         this.vel = new Vector(0, 0);
         this.isFacingRight = true;
-        this.speed = 80;
+        this.speed = 60;
         this.attackPhase = 0;
         this.attackTimer = null;
         this.attackTimerActive = false;
         this.isAttacking = false;
         this.body.group = enemyGroup;
         this.lives = 2; // Initialize lives
+        this.pos = new Vector(spawnX, spawnY);
 
         // Create the blood overlay actor
         this.bloodOverlay = new Actor({
@@ -35,7 +36,6 @@ export class Lich extends Enemies {
         ]);
         this.collider.set(capsule);
         this.engine = engine;
-        this.pos = new Vector(1350, 100); // spawn position
 
         // Add blood overlay as a child actor
         this.addChild(this.bloodOverlay);
@@ -87,7 +87,7 @@ export class Lich extends Enemies {
         // check hoe ver de player is
         const distanceToPlayer = this.pos.distance(this.player.pos);
 
-        if (distanceToPlayer <= 400) {
+        if (distanceToPlayer <= 500) {
             this.vel = new Vector(0, 0); // stop met bewegen
             this.facePlayer();
             this.startAttackAnimation();
