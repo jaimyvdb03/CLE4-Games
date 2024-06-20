@@ -15,11 +15,16 @@ export class Player extends Actor {
         this.gamepad = gamepad; // Store the gamepad instance
         this.joystickMoved = false; // Flag to track if joystick moved
 
-         // Speed boost variables
+        // Speed boost variables
         this.speedMultiplier = 1;
         this.speedBoostActive = false;
         this.speedBoostDuration = 6 * 1000;
         this.speedBoostEndTime = 0;
+
+        // Attack speed boost variables
+        this.atkSpeedBoostActive = false;
+        this.atkSpeedBoostDuration = 6 * 1000;
+        this.atkSpeedBoostEndTime = 0;
     }
 
     // Getter for lifes
@@ -47,6 +52,14 @@ export class Player extends Actor {
             this.speedBoostActive = true;
             this.speedBoostEndTime = Date.now() + this.speedBoostDuration;
         }
+        // Pickup atk speed boost
+        else if (evt.other.name === 'atk_speed_boost') {
+            console.log('picked up atk speed boost');
+            evt.other.kill();
+            this.atkSpeedBoostActive = true;
+            this.atkSpeedBoostEndTime = Date.now() + this.atkSpeedBoostDuration;
+            this.weapon.setAttackSpeedBoost(true);
+        } 
         // Pickup lifeboost
         else if (evt.other.name === 'lifeboost') {
             console.log('picked up lifeboost');
@@ -112,6 +125,13 @@ export class Player extends Actor {
             console.log('Speed boost expired');
             this.speedMultiplier = 1; // Reset speed to normal
             this.speedBoostActive = false;
+        }
+
+        // Check attack speed boost timer
+        if (this.atkSpeedBoostActive && Date.now() >= this.atkSpeedBoostEndTime) {
+            console.log('Attack speed boost expired');
+            this.weapon.setAttackSpeedBoost(false);
+            this.atkSpeedBoostActive = false;
         }
     
         // Boundary constraints
