@@ -18,6 +18,7 @@ import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
 import { WaveLabel } from './waveLabel.js';
 import { ScoreLabel } from "./scoreLabel.js";
+import { highScoreLabel } from "./highscoreLabel.js";
 import { Background2 } from './background2.js';
 
 export class Wave2 extends Scene {
@@ -49,6 +50,9 @@ export class Wave2 extends Scene {
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
+
+        this.highscore = new highScoreLabel(970, 80);
+        this.add(this.highscore);
 
         let topCockroach = new Cockroach(this.wave, this.player, 1260, 30);
         this.add(topCockroach);

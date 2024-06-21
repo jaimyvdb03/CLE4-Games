@@ -25,6 +25,10 @@ export class Player extends Actor {
         this.atkSpeedBoostActive = false;
         this.atkSpeedBoostDuration = 6 * 1000;
         this.atkSpeedBoostEndTime = 0;
+
+        // Weapon switching variables
+        this.weapons = [];
+        this.currentWeaponIndex = 0;
     }
 
     // Getter for lifes
@@ -38,6 +42,7 @@ export class Player extends Actor {
         this.graphics.use(Resources.Player.toSprite());
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
+        this.initializeWeapons();
         this.armPlayer();
     }
 
@@ -128,6 +133,20 @@ export class Player extends Actor {
             if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
                 console.log('phew pauw');
             }
+
+            // Switch weapons
+            if (engine.mygamepad.isButtonPressed(Buttons.DpadDown)) {
+                this.switchWeapon(0);
+            }
+            if (engine.mygamepad.isButtonPressed(Buttons.DpadUp)) {
+                this.switchWeapon(1);
+            }
+            if (engine.mygamepad.isButtonPressed(Buttons.DpadLeft)) {
+                this.switchWeapon(2);
+            }
+            if (engine.mygamepad.isButtonPressed(Buttons.DpadRight)) {
+                this.switchWeapon(3);
+            }
         }
 
         // Check speed boost timer
@@ -158,13 +177,27 @@ export class Player extends Actor {
         // }
     }
 
+    initializeWeapons() {
+        this.weapons.push(new Staff());
+        this.weapons.push(new Bow());
+        this.weapons.push(new ThrowingAxe());
+        this.weapons.push(new Spellbook());
+    }
 
     armPlayer() {
-        const weapon = new Spellbook();
+        const weapon = this.weapons[this.currentWeaponIndex];
         this.weapon = weapon;
         this.addChild(weapon);
     }
 
+    switchWeapon(weaponIndex) {
+        if (weaponIndex >= 0 && weaponIndex < this.weapons.length) {
+            this.removeChild(this.weapon);
+            this.currentWeaponIndex = weaponIndex;
+            this.armPlayer();
+            console.log(`You equipped a ${this.weapons[weaponIndex].constructor.name}`);
+        }
+    }
 
     turnWeapon(direction) {
         if (direction == 1) {
