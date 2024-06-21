@@ -1,4 +1,4 @@
-import { Actor, Keys, Vector} from "excalibur"
+import {Actor, Axes, Buttons, Keys, Vector} from "excalibur"
 import { Resources } from './resources'
 import { WeaponProjectile } from "./weaponProjectile"
 
@@ -22,45 +22,48 @@ export class Bow extends Actor {
 
         // Adjust position based on player's direction
         if (this.direction === 1) {
-            this.pos = new Vector(35, 10); 
+            this.pos = new Vector(35, 10);
         } else {
-            this.pos = new Vector(-35, 10); 
+            this.pos = new Vector(-35, 10);
         }
 
         if (engine.input.keyboard.wasPressed(Keys.Space) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
             this.lastShotTime = this.currentTime
-
-            if (this.direction === 1) {
-                this.scaleX = 0.15
-            } else {
-                this.scaleX = -0.15
-            }
-            const projectileSpeed = this.atkSpeedBoostActive ? 1500 : 800;
-            const projectileXPos = this.direction === 1 ? this.parent.pos.x + 70 : this.parent.pos.x - 70;
-
-            const projectile = new WeaponProjectile(
-                // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                projectileXPos, this.parent.pos.y + 10, Resources.Arrow, this.scaleX, 0.15, projectileSpeed, 0, 0, this.direction,
-                Resources.Arrow.width / 15, Resources.Arrow.height /85)
-            engine.add(projectile)
+            this.shoot(engine)
         }
 
-        //  // Check for shooting with R1 button
-        //  if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
-        //     // this.weapon.shoot();
-        //     console.log('phew pauw')
-        //     if (this.direction === 1) {
-        //         this.scaleX = 0.15  
-        //     } else {
-        //         this.scaleX = -0.15
-        //     }
-        //     const projectile = new WeaponProjectile(
-        //         // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-        //         this.parent.pos.x, this.parent.pos.y, Resources.Arrow, this.scaleX, 0.15, 800, 0, 0, this.direction,
-        //         Resources.Arrow.width / 15, Resources.Arrow.height /15)
-        //     engine.add(projectile)
-        // }
-    }   
+        let rightStickX = engine.mygamepad.getAxes(Axes.RightStickX)
+        let rightStickY = engine.mygamepad.getAxes(Axes.RightStickY)
+        let directionVector = new Vector(rightStickX, rightStickY).normalize();
+
+        if (engine.mygamepad.isButtonPressed(Buttons.LeftTrigger) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
+            this.lastShotTime = this.currentTime
+            this.shoot(engine, directionVector)
+        }
+    }
+
+    shoot(engine, directionVector = new Vector(this.direction, 0)) {
+        const projectileSpeed = this.atkSpeedBoostActive ? 1500 : 800;
+        const projectileXPos = this.direction === 1 ? this.parent.pos.x + 70 : this.parent.pos.x - 70;
+
+        const velocityX = directionVector.x * projectileSpeed;
+        const velocityY = directionVector.y * projectileSpeed;
+
+        const projectile = new WeaponProjectile(
+            projectileXPos,
+            this.parent.pos.y + 10,
+            Resources.Arrow,
+            0.15,
+            0.15,
+            velocityX,
+            velocityY,
+            0,
+            this.direction,
+            Resources.Arrow.width / 15,
+            Resources.Arrow.height / 85
+        );
+        engine.currentScene.add(projectile);
+    }
 
     setAttackSpeedBoost(active) {
         this.atkSpeedBoostActive = active;
