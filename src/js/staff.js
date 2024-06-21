@@ -1,4 +1,4 @@
-import { Actor, Keys, Vector } from "excalibur";
+import {Actor, Axes, Buttons, Keys, Vector} from "excalibur"
 import { Resources } from './resources';
 import { WeaponProjectile } from "./weaponProjectile";
 
@@ -22,28 +22,49 @@ export class Staff extends Actor {
 
         // Adjust position based on player's direction
         if (this.direction === 1) {
-            this.pos = new Vector(50, -8); 
+            this.pos = new Vector(50, -8);
         } else {
-            this.pos = new Vector(-50, -8); 
+            this.pos = new Vector(-50, -8);
         }
 
         if (engine.input.keyboard.wasPressed(Keys.Space) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
             this.lastShotTime = this.currentTime;
-            if (this.direction === 1) {
-                this.scaleX = 0.1;
-            } else {
-                this.scaleX = -0.1;
-            }
-
-            const projectileSpeed = this.atkSpeedBoostActive ? 1300 : 650;
-            const projectileXPos = this.direction === 1 ? this.parent.pos.x + 110 : this.parent.pos.x - 110;
-
-            const projectile = new WeaponProjectile(
-                // X pos, Y pos, Image, X scale, Y scale, X vel, Y vel, Angular vel
-                projectileXPos, this.parent.pos.y - 25, Resources.StaffProjectile, 0.1, 0.1, projectileSpeed, 0, 200, this.direction,
-                Resources.ThrowingAxe.width / 15, Resources.ThrowingAxe.height / 15);
-            engine.add(projectile);
+            this.shoot(engine);
         }
+
+        if (engine.mygamepad) {
+            let rightStickX = engine.mygamepad.getAxes(Axes.RightStickX);
+            let rightStickY = engine.mygamepad.getAxes(Axes.RightStickY);
+            let directionVector = new Vector(rightStickX, rightStickY).normalize();
+            if (engine.mygamepad.isButtonPressed(Buttons.LeftTrigger) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
+                this.lastShotTime = this.currentTime;
+                this.shoot(engine, directionVector);
+            }
+        }
+    }
+
+
+    shoot(engine, directionVector = new Vector(this.direction, 0)) {
+        const projectileSpeed = this.atkSpeedBoostActive ? 1300 : 650;
+        const projectileXPos = this.direction === 1 ? this.parent.pos.x + 110 : this.parent.pos.x - 110;
+
+        const velocityX = directionVector.x * projectileSpeed;
+        const velocityY = directionVector.y * projectileSpeed;
+
+        const projectile = new WeaponProjectile(
+            projectileXPos,
+            this.parent.pos.y - 25,
+            Resources.StaffProjectile,
+            0.1,
+            0.1,
+            velocityX,
+            velocityY,
+            200,
+            this.direction,
+            Resources.ThrowingAxe.width / 15,
+            Resources.ThrowingAxe.height / 15
+        );
+        engine.currentScene.add(projectile);
     }
 
     setAttackSpeedBoost(active) {

@@ -18,8 +18,15 @@ export class WeaponProjectile extends Actor {
 
     onInitialize(engine) {
         const projectileSprite = this.sprite.toSprite();
-        projectileSprite.scale = new Vector(this.scaleX, this.scaleY);
+        projectileSprite.scale = new Vector(this.scaleX,  this.scaleY);
         this.graphics.use(projectileSprite);
+        if (this.direction > 0) {
+            this.graphics.flipHorizontal = false
+        }
+        if (this.direction < 0) {
+            this.graphics.flipHorizontal = true
+            this.velX *= -1
+        }
         this.vel = new Vector(this.velX, this.velY);
         this.angularVelocity = this.angVel;
         this.vel.x = this.vel.x * this.direction;
