@@ -24,12 +24,19 @@ export class ScoreLabel extends ScreenElement {
     changeText(points) {
         if (points < 100) {
             this.textGraphic.text = `00${points.toString()}`
-        }
-        else if(points < 1000) {
+        } else if (points < 1000) {
             this.textGraphic.text = `0${points.toString()}`
-        }
-        else if (points < 10000) {
+        } else if (points < 10000) {
             this.textGraphic.text = points.toString()
+        }
+
+        // Get the current highscore from local storage
+        const highscore = localStorage.getItem('highscore');
+        
+        // Check if the current points are higher than the stored highscore
+        if (highscore === null || points > parseInt(highscore)) {
+            // Save the points to local storage under the name 'highscore'
+            localStorage.setItem('highscore', points.toString());
         }
     }
 }

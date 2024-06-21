@@ -3,6 +3,7 @@ import { ImageSource, Sound, Resource, Loader } from 'excalibur'
 const Resources = {
     Fish: new ImageSource('images/fish.png'),
     Background1: new ImageSource('images/background1.png'),
+    Background2: new ImageSource('images/placeholder-map.png'),
     Bush1: new ImageSource('images/object-bush1.png'),
     Bush2: new ImageSource('images/object-bush2.png'),
     Bush3: new ImageSource('images/object-bush3.png'),
@@ -15,6 +16,9 @@ const Resources = {
     Player: new ImageSource('images/player.png'),
     Speedboost: new ImageSource('images/speedboost.png'),
     Lifeboost: new ImageSource('images/lifeboost.png'),
+    atk_speed_frame1: new ImageSource('images/atk_speed_frame1.png'),
+    atk_speed_frame2: new ImageSource('images/atk_speed_frame2.png'),
+    atk_speed_frame3: new ImageSource('images/atk_speed_frame3.png'),
     Life: new ImageSource('images/life.png'),
     CockroachLeft1: new ImageSource('images/roach-left-1.png'),
     CockroachLeft2: new ImageSource('images/roach-left-2.png'),
@@ -38,11 +42,13 @@ const Resources = {
     ReaperBlood1: new ImageSource('images/reaper-blood1.png'),
     ReaperBlood2: new ImageSource('images/reaper-blood2.png'),
     ReaperBlood3: new ImageSource('images/reaper-blood3.png'),
+    Deathbanner: new ImageSource('images/deathbanner.png'),
 
 }
 const ResourceLoader = new Loader([
     Resources.Player,
     Resources.Background1,
+    Resources.Background2,
     Resources.Bush1,
     Resources.Bush2,
     Resources.Bush3,
@@ -53,6 +59,9 @@ const ResourceLoader = new Loader([
     Resources.Playground,
     Resources.Hotel,
     Resources.Speedboost,
+    Resources.atk_speed_frame1,
+    Resources.atk_speed_frame2,
+    Resources.atk_speed_frame3,
     Resources.Lifeboost,
     Resources.Life,
     Resources.CockroachLeft1,
@@ -76,7 +85,8 @@ const ResourceLoader = new Loader([
     Resources.SpellbookProjectile,
     Resources.ReaperBlood1,
     Resources.ReaperBlood2,
-    Resources.ReaperBlood3
+    Resources.ReaperBlood3,
+    Resources.Deathbanner,
 ])
 
 export { Resources, ResourceLoader }

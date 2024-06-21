@@ -1,4 +1,4 @@
-import {Actor, Vector, Keys, CollisionType, Input, Axes, Buttons} from "excalibur";
+import { Actor, Vector, Keys, CollisionType, Input, Buttons, Axes } from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Bow } from "./bow.js";
@@ -9,13 +9,22 @@ import { LichProjectile } from "./lich-projectile.js";
 
 export class Player extends Actor {
     constructor(x, y, gamepad) {
-        super({ x, y, width: Resources.Player.width - 5, height: Resources.Player.height });
+        super({ x, y, width: Resources.Player.width / 2, height: Resources.Player.height });
         this.body.collisionType = CollisionType.Active; // Active collision type
-        this.speedMultiplier = 1; // Default speed multiplier
         this._lifes = 4; // Initialize lifes from constructor parameter
         this.gamepad = gamepad; // Store the gamepad instance
         this.joystickMoved = false; // Flag to track if joystick moved
-        console.log(this._lifes);
+
+        // Speed boost variables
+        this.speedMultiplier = 1;
+        this.speedBoostActive = false;
+        this.speedBoostDuration = 6 * 1000;
+        this.speedBoostEndTime = 0;
+
+        // Attack speed boost variables
+        this.atkSpeedBoostActive = false;
+        this.atkSpeedBoostDuration = 6 * 1000;
+        this.atkSpeedBoostEndTime = 0;
     }
 
     // Getter for lifes
@@ -29,8 +38,7 @@ export class Player extends Actor {
         this.graphics.use(Resources.Player.toSprite());
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
-        this.armPlayer()
-        this.pos = new Vector(1350, 500);
+        this.armPlayer();
     }
 
     handleCollision(evt) {
@@ -39,9 +47,17 @@ export class Player extends Actor {
             // Activate the speed boost
             console.log('picked up speedboost');
             evt.other.kill();
-            this.speedMultiplier = 2; // Increase speed by 2 times (not 5 times as originally stated)
-            this.speedBoostTimer = 10 * 1000; // 10 seconds
+            this.speedMultiplier = 2; // Increase speed by 2 times
             this.speedBoostActive = true;
+            this.speedBoostEndTime = Date.now() + this.speedBoostDuration;
+        }
+        // Pickup atk speed boost
+        else if (evt.other.name === 'atk_speed_boost') {
+            console.log('picked up atk speed boost');
+            evt.other.kill();
+            this.atkSpeedBoostActive = true;
+            this.atkSpeedBoostEndTime = Date.now() + this.atkSpeedBoostDuration;
+            this.weapon.setAttackSpeedBoost(true);
         }
         // Pickup lifeboost
         else if (evt.other.name === 'lifeboost') {
@@ -52,15 +68,10 @@ export class Player extends Actor {
         } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
             this._lifes -= 1;
             console.log(`Ow no you got hit. You have`, this._lifes, 'left.')
-
-        } else if (evt.other.name === 'lifeboost') {
-            console.log('picked up lifeboost');
-            evt.other.kill();
-            this._lifes += 1;
-            console.log(this._lifes)
-        } else if (evt.other instanceof Enemies || evt.other instanceof LichProjectile) {
-            this._lifes -= 1;
-
+            if (this._lifes <= 0) {
+                console.log('You died :(');
+                this.engine.goToScene('gameOver');
+            }
         }
     }
 
@@ -70,10 +81,10 @@ export class Player extends Actor {
         let xspeed = 0;
         let yspeed = 0;
 
-        // Keyboard input
         if (engine.input.keyboard.isHeld(Keys.W) || engine.input.keyboard.isHeld(Keys.Up)) {
             yspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
+
         }
 
         if (engine.input.keyboard.isHeld(Keys.S) || engine.input.keyboard.isHeld(Keys.Down)) {
@@ -84,63 +95,79 @@ export class Player extends Actor {
         if (engine.input.keyboard.isHeld(Keys.A) || engine.input.keyboard.isHeld(Keys.Left)) {
             xspeed = -350 * this.speedMultiplier;
             this.graphics.flipHorizontal = false;
-            this.turnWeapon(0)
+            this.turnWeapon(0);
         }
 
         if (engine.input.keyboard.isHeld(Keys.D) || engine.input.keyboard.isHeld(Keys.Right)) {
             xspeed = 350 * this.speedMultiplier;
             this.graphics.flipHorizontal = true;
-            this.turnWeapon(1)
-
+            this.turnWeapon(1);
         }
 
         this.vel = new Vector(xspeed, yspeed);
 
-        //gamepad movement
-        if (!engine.mygamepad) {
-            return
-        }
-        // beweging
-        const x = engine.mygamepad.getAxes(Axes.LeftStickX)
-        const y = engine.mygamepad.getAxes(Axes.LeftStickY)
-        this.vel = new Vector(x * 350* this.speedMultiplier, y * 350* this.speedMultiplier)
+        // Gamepad movement
+        if (engine.mygamepad) {
+            const x = engine.mygamepad.getAxes(Axes.LeftStickX);
+            const y = engine.mygamepad.getAxes(Axes.LeftStickY);
+            this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier);
 
-        if (this.vel.x > 0) {
-            this.graphics.flipHorizontal = true;
-            this.turnWeapon(1)
-        }
-        if (this.vel.x < 0) {
-            this.graphics.flipHorizontal = false;
-            this.turnWeapon(0)
+            // Shooting, jumping
+            if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
+                console.log('test');
+            }
+            if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
+                console.log('phew pauw');
+            }
         }
 
-        // schieten, springen
-        if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
-            console.log('test')
+        // Check speed boost timer
+        if (this.speedBoostActive && Date.now() >= this.speedBoostEndTime) {
+            console.log('Speed boost expired');
+            this.speedMultiplier = 1; // Reset speed to normal
+            this.speedBoostActive = false;
         }
-        // Check for shooting with R1 button
-        if (engine.mygamepad.isButtonPressed(Buttons.LeftTrigger)) {
-            console.log('phew pauw')
+
+        // Check attack speed boost timer
+        if (this.atkSpeedBoostActive && Date.now() >= this.atkSpeedBoostEndTime) {
+            console.log('Attack speed boost expired');
+            this.weapon.setAttackSpeedBoost(false);
+            this.atkSpeedBoostActive = false;
         }
+
+        // // Boundary constraints
+        // if (this.pos.x < this.width / 2) {
+        //     this.pos.x = this.width / 2;
+        // } else if (this.pos.x > 2560 - this.width / 2) {
+        //     this.pos.x = 2560 - this.width / 2;
+        // }
+
+        // if (this.pos.y < this.height / 2) {
+        //     this.pos.y = this.height / 2;
+        // } else if (this.pos.y > 720 - this.height / 2) {
+        //     this.pos.y = 720 - this.height / 2;
+        // }
     }
 
+
     armPlayer() {
-        const weapon = new Bow();
+        const weapon = new Spellbook();
         this.weapon = weapon;
         this.addChild(weapon);
     }
 
-    turnWeapon(direction,) {
+
+    turnWeapon(direction) {
         if (direction == 1) {
-            this.weapon.scale.x = 1
-            this.weapon.pos.x = 30
-            this.weapon.direction = 1
+            this.weapon.scale.x = 1;
+            this.weapon.pos.x = 30;
+            this.weapon.direction = 1;
         }
 
         if (direction == 0) {
-            this.weapon.scale.x = -1
-            this.weapon.pos.x = -30
-            this.weapon.direction = -1
+            this.weapon.scale.x = -1;
+            this.weapon.pos.x = -30;
+            this.weapon.direction = -1;
         }
     }
 }
