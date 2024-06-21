@@ -112,6 +112,15 @@ export class Player extends Actor {
             const y = engine.mygamepad.getAxes(Axes.LeftStickY);
             this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier);
 
+            if (this.vel.x > 0) {
+                this.turnWeapon(1)
+                this.graphics.flipHorizontal = true
+            }
+            if (this.vel.x < 0) {
+                this.turnWeapon(0)
+                this.graphics.flipHorizontal = false
+            }
+
             // Shooting, jumping
             if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
                 console.log('test');
