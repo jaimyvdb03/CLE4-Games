@@ -20,6 +20,7 @@ import { WaveLabel } from './waveLabel.js';
 import { ScoreLabel } from "./scoreLabel.js";
 import { highScoreLabel } from "./highscoreLabel.js";
 import { Background2 } from './background2.js';
+import {Dpad_equip} from "./Dpad.js";
 
 export class Wave2 extends Scene {
     constructor() {
@@ -33,6 +34,9 @@ export class Wave2 extends Scene {
         // Adding background
         const background = new Background2();
         this.add(background);
+
+        this.Dpad = new Dpad_equip(30, 550)
+        this.add(this.Dpad);
 
         this.player = new Player(1260, 1800, gamepad);
         this.add(this.player);

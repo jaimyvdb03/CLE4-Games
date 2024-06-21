@@ -19,6 +19,7 @@ import { WeaponProjectile } from './weaponProjectile.js';
 import { WaveLabel } from './waveLabel.js';
 import {ScoreLabel} from "./scoreLabel.js";
 import {highScoreLabel} from "./highscoreLabel.js";
+import {Dpad_equip} from "./Dpad.js";
 
 
 export class Wave1 extends Scene {
@@ -82,6 +83,8 @@ export class Wave1 extends Scene {
         const bush3 = new Bush(1220, 0, 940, 50, Resources.Bush3, new Vector(1, 0)); // x,y,width,height,image,anchor
         this.add(bush3);
 
+        this.Dpad = new Dpad_equip(30, 550)
+        this.add(this.Dpad);
 
         this.player = new Player(1350, 300);
 

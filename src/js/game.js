@@ -25,8 +25,6 @@ export class Game extends Engine {
         }
     }
 
-
-
     //game.js naar scene 1
     startGame() {
         console.log("Start de game!");
