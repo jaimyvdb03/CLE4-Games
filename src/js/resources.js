@@ -14,6 +14,9 @@ const Resources = {
     Playground: new ImageSource('images/object-playground.png'),
     Hotel: new ImageSource('images/object-hotel.png'),
     Player: new ImageSource('images/player.png'),
+    Player_frame1: new ImageSource('images/player_frame1.png'),
+    Player_frame2: new ImageSource('images/player_frame2.png'),
+    Player_loopSprite: new ImageSource('images/player_loopSprite.jpg'),
     Speedboost: new ImageSource('images/speedboost.png'),
     Lifeboost: new ImageSource('images/lifeboost.png'),
     atk_speed_frame1: new ImageSource('images/atk_speed_frame1.png'),
@@ -48,6 +51,9 @@ const Resources = {
 }
 const ResourceLoader = new Loader([
     Resources.Player,
+    Resources.Player_frame1,
+    Resources.Player_frame2,
+    Resources.Player_loopSprite,
     Resources.Background1,
     Resources.Background2,
     Resources.Bush1,
