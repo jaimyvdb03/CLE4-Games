@@ -40,6 +40,10 @@ export class Player extends Actor {
         this.engine = engine;  // Store the engine instance
         this.body.useGravity = true;
         this.graphics.use(Resources.Player.toSprite());
+
+        //loop animatie frames
+        // this.graphics.use(Resources.Player_loopSprite.toSprite());
+
         this.on('collisionstart', this.handleCollision.bind(this));
         this.vel = new Vector(0, 0);
         this.initializeWeapons();

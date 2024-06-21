@@ -20,7 +20,7 @@ import { WaveLabel } from './waveLabel.js';
 import {ScoreLabel} from "./scoreLabel.js";
 import {highScoreLabel} from "./highscoreLabel.js";
 import {Dpad_equip} from "./Dpad.js";
-
+import { Wave2 } from './scene_wave2.js';
 
 export class Wave1 extends Scene {
     constructor() {
@@ -29,7 +29,6 @@ export class Wave1 extends Scene {
         this.currentWaveLabel = null;
         this.totalWaves = 5;
     }
-
 
     resetScene() {
 
@@ -49,7 +48,6 @@ export class Wave1 extends Scene {
         this.enemiesKilled = 0;
         this.spawnSpeed = 3;
         this.cockroachSpawnRate = 1;
-
         // Voeg alle actoren opnieuw toe
         this.makeActors()
     }
@@ -90,9 +88,6 @@ export class Wave1 extends Scene {
 
         this.add(this.player);
 
-        const atk = new atk_speed_boost(1400, 300);
-        this.add(atk);
-
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
         const boundingBox = new BoundingBox(0, 0, 2560, 720);
         this.camera.strategy.limitCameraBounds(boundingBox);
@@ -123,7 +118,12 @@ export class Wave1 extends Scene {
         this.makeActors()
     }
     
-    onActivate() {
+    onActivate(engine) {
+        super.onActivate();
+
+        // Reset points to 0
+        engine.points = 0;
+
         this.reset = JSON.parse(localStorage.getItem('reset'));
         if (this.reset) {
             this.resetScene()
@@ -141,17 +141,21 @@ export class Wave1 extends Scene {
     reset;
 
     startWave() {
-        if (this.wave === 5) {
+        if (this.wave > this.totalWaves) {
             console.log("WE ARE DONE");
+            // Transition to Scene2
+            this.engine.goToScene('wave2');
+            return;
         }
-
+    
         console.log("Wave: " + this.wave);
         this.increaseEnemyWave += 1; // Je moet 5 enemies meer killen voordat nieuwe wave start
         this.enemiesLeftBeforeNewWave = this.increaseEnemyWave;
         this.spawnSpeed = this.spawnSpeed - 0.3; // Elke wave spawnen enemies 0.3 sneller
-
+    
         this.currentWaveLabel.setCurrentWave(this.wave);
     }
+    
 
     onPreUpdate(engine, delta) {
         this.spawnTimer += delta / 1000;
