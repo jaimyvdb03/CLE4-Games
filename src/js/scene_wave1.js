@@ -141,7 +141,7 @@ export class Wave1 extends Scene {
     reset;
 
     startWave() {
-        if (this.wave > 1) { //this.totalWaves
+        if (this.wave > this.totalWaves) {
             console.log("WE ARE DONE");
             // Transition to Scene2
             this.engine.goToScene('wave2');
