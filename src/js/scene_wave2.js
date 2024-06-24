@@ -52,7 +52,7 @@ export class Wave2 extends Scene {
         this.currentWaveLabel = new WaveLabel(600, 20, this.totalWaves);
         this.add(this.currentWaveLabel);
 
-        this.scoreLabel = new ScoreLabel(1125, 20);
+        this.scoreLabel = new ScoreLabel(1100, 20);
         this.add(this.scoreLabel);
         this.scoreLabel.changeText(this.engine.points);
 
