@@ -148,7 +148,7 @@ export class Wave1 extends Scene {
             return;
         }
 
-        console.log("Wave: " + this.wave);
+        console.log("Wave: " + this.totalWaves);
         this.increaseEnemyWave += 1; // Je moet 5 enemies meer killen voordat nieuwe wave start
         this.enemiesLeftBeforeNewWave = this.increaseEnemyWave;
         this.spawnSpeed = this.spawnSpeed - 0.3; // Elke wave spawnen enemies 0.3 sneller
@@ -205,7 +205,7 @@ export class Wave1 extends Scene {
         this.enemiesLeftBeforeNewWave--;
         this.enemiesKilled++;
         console.log(this.enemiesKilled);
-        if (this.enemiesKilled === 2) {
+        if (this.enemiesLeftBeforeNewWave === 0) {
             this.wave++;
             this.startWave();
         }
