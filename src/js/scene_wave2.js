@@ -162,7 +162,7 @@ export class Wave2 extends Scene {
             this.add(topReaper);
         }
 
-        if (this.wave >= 15 && this.wave < 20) {
+        if (this.wave >= 5 && this.wave < 10) {
             const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
             if (spawnLocation === 'right') {
                 let randomReaper = new Reaper(this.wave, this.player, 2590, 1420);
@@ -172,7 +172,7 @@ export class Wave2 extends Scene {
                 this.add(randomReaper);
             }
         }
-        else if (this.wave >= 20) {
+        else if (this.wave >= 10) {
             let rightReaper = new Reaper(this.wave, this.player, 2590, 1420);
             this.add(rightReaper);
             let leftReaper = new Reaper(this.wave, this.player, 20, 1440);
