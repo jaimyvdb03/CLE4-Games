@@ -29,18 +29,17 @@ export class Game extends Engine {
     startGame() {
         console.log("Start de game!");
 
+        this.add('wave1', new Wave1());
+        this.add('wave2', new Wave2());
+        this.add('gameOver', new Game_over_Scene());
+        // Start with the intro scene
+        this.goToScene('wave1');
+
         this.input.gamepads.enabled = true
         this.input.gamepads.on('connect', (connectevent) => {
             console.log("gamepad detected")
             this.mygamepad = connectevent.gamepad
         })
-
-        this.add('wave1', new Wave1());
-        this.add('wave2', new Wave2());
-        this.add('gameOver', new Game_over_Scene());
-        // Start with the intro scene
-
-        this.goToScene('wave1');
     }
 }
 new Game();
