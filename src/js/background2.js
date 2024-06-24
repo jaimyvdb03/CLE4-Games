@@ -4,8 +4,6 @@ import { Resources } from './resources.js'
 export class Background2 extends Actor {
     constructor() {
         super({
-            width: Resources.Background2.width,
-            height: Resources.Background2.height,
             anchor: Vector.Zero,
             pos: new Vector(0, 0)
         })
