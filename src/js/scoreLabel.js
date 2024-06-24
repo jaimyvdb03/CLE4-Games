@@ -8,7 +8,7 @@ export class ScoreLabel extends ScreenElement {
         });
 
         this.textGraphic = new Text({
-            text: '0000',
+            text: '00000',
             font: new Font({
                 size: 60,
                 color: Color.White,
@@ -23,10 +23,12 @@ export class ScoreLabel extends ScreenElement {
 
     changeText(points) {
         if (points < 100) {
-            this.textGraphic.text = `00${points.toString()}`
+            this.textGraphic.text = `000${points.toString()}`
         } else if (points < 1000) {
-            this.textGraphic.text = `0${points.toString()}`
+            this.textGraphic.text = `00${points.toString()}`
         } else if (points < 10000) {
+            this.textGraphic.text = `0${points.toString()}`
+        } else if (points < 100000) {
             this.textGraphic.text = points.toString()
         }
 
