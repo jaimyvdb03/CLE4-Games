@@ -38,7 +38,7 @@ export class Wave2 extends Scene {
         this.Dpad = new Dpad_equip(30, 550)
         this.add(this.Dpad);
 
-        this.player = new Player(1260, 1800);
+        this.player = new Player(1260, 1000);
         this.add(this.player);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
