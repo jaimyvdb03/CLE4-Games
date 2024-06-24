@@ -1,4 +1,4 @@
-import { Actor, Vector, Keys, CollisionType, Input, Buttons, Axes } from "excalibur";
+import { Actor, Vector, Keys, CollisionType, Input, Buttons, Axes, Timer } from "excalibur";
 import { Resources } from './resources.js';
 import { ThrowingAxe } from "./throwingAxe.js";
 import { Bow } from "./bow.js";
@@ -29,6 +29,10 @@ export class Player extends Actor {
         // Weapon switching variables
         this.weapons = [];
         this.currentWeaponIndex = 0;
+
+        this.isMoving = false;
+        this.isFrame1 = true;
+
     }
 
     // Getter for lifes
@@ -48,7 +52,29 @@ export class Player extends Actor {
         this.vel = new Vector(0, 0);
         this.initializeWeapons();
         this.armPlayer();
+
+        this.animationTimer = new Timer({
+            interval: 100,
+            repeats: true,
+            fcn: () => this.toggleSprite()
+        });
+        engine.add(this.animationTimer);
+        this.animationTimer.start();
     }
+
+    toggleSprite() {
+        if (this.isMoving) {
+            this.isFrame1 = !this.isFrame1;
+            if (this.isFrame1) {
+                this.graphics.use(Resources.Player_frame1.toSprite());
+            } else {
+                this.graphics.use(Resources.Player_frame2.toSprite());
+            }
+        } else {
+            this.graphics.use(Resources.Player.toSprite());
+        }
+    }
+
 
     handleCollision(evt) {
         // Pickup speedboost
@@ -114,12 +140,15 @@ export class Player extends Actor {
         }
 
         this.vel = new Vector(xspeed, yspeed);
+        this.isMoving = xspeed !== 0 || yspeed !== 0;
+
 
         // Gamepad movement
         if (engine.mygamepad) {
             const x = engine.mygamepad.getAxes(Axes.LeftStickX);
             const y = engine.mygamepad.getAxes(Axes.LeftStickY);
             this.vel = new Vector(x * 350 * this.speedMultiplier, y * 350 * this.speedMultiplier);
+            this.isMoving = x !== 0 || y !== 0;
 
             if (this.vel.x > 0) {
                 this.turnWeapon(1)

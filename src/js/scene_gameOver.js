@@ -22,11 +22,13 @@ export class Game_over_Scene extends Scene {
                 this.engine.points = 0
             }
 
-            if (this.engine.mygamepad.isButtonPressed(Buttons.LeftBumper)) {
-                // Transitie naar Level1Scene
-                let reset = true;
-                localStorage.setItem('reset', JSON.stringify(reset));
-                this.engine.goToScene('wave1'); // Use this.engine
+            if (this.engine.mygamepad) {
+                if (this.engine.mygamepad.isButtonPressed(Buttons.LeftBumper)) {
+                    // Transition to Wave1Scene
+                    let reset = true;
+                    localStorage.setItem('reset', JSON.stringify(reset));
+                    this.engine.goToScene('wave1'); // Use this.engine
+                }
             }
         });
     }
