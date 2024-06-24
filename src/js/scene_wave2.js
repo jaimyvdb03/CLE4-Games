@@ -20,7 +20,7 @@ import { WaveLabel } from './waveLabel.js';
 import { ScoreLabel } from "./scoreLabel.js";
 import { highScoreLabel } from "./highscoreLabel.js";
 import { Background2 } from './background2.js';
-import {Dpad_equip} from "./Dpad.js";
+import { Dpad_equip } from "./Dpad.js";
 
 export class Wave2 extends Scene {
     constructor() {
@@ -92,6 +92,17 @@ export class Wave2 extends Scene {
             this.wave++;
             this.startWave();
         }
+        if (this.enemiesKilled % 10 === 0) {
+            this.spawnPowerUp('health');
+        }
+
+        if (this.enemiesKilled % 15 === 0) {
+            this.spawnPowerUp('speed');
+        }
+        if (this.enemiesKilled % 15 === 0) {
+            this.spawnPowerUp('attack');
+        }
+
     }
 
     spawnCockroach() {
@@ -195,6 +206,23 @@ export class Wave2 extends Scene {
         if (this.reaperSpawnTimer >= this.reaperSpawnInterval) {
             this.spawnReaper();
             this.reaperSpawnTimer = 0; // Reset timer
+        }
+    }
+
+    spawnPowerUp(type) {
+        const spawnX = 690 + Math.random() * (2780 - 690);
+        const spawnY = 1220 + Math.random() * (1870 - 1220);
+
+        if (type === 'health') {
+            const lifeboost = new Lifeboost(spawnX, spawnY);
+            this.add(lifeboost);
+        } else if (type === 'speed') {
+            const speedboost = new Speedboost(spawnX, spawnY);
+            this.add(speedboost);
+        }
+        else if (type === 'attack') {
+            const attackboost = new atk_speed_boost(spawnX, spawnY);
+            this.add(attackboost);
         }
     }
 }
