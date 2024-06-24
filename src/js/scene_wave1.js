@@ -17,9 +17,9 @@ import { Lifeboost } from './Lifeboost.js';
 import { Life } from './Lifes.js';
 import { WeaponProjectile } from './weaponProjectile.js';
 import { WaveLabel } from './waveLabel.js';
-import {ScoreLabel} from "./scoreLabel.js";
-import {highScoreLabel} from "./highscoreLabel.js";
-import {Dpad_equip} from "./Dpad.js";
+import { ScoreLabel } from "./scoreLabel.js";
+import { highScoreLabel } from "./highscoreLabel.js";
+import { Dpad_equip } from "./Dpad.js";
 import { Wave2 } from './scene_wave2.js';
 
 export class Wave1 extends Scene {
@@ -39,7 +39,7 @@ export class Wave1 extends Scene {
         this.actors.forEach(actor => {
             actor.kill();
         });
-        
+
         // Reset de variabelen
         this.wave = 1;
         this.enemiesLeftBeforeNewWave = 10;
@@ -100,7 +100,7 @@ export class Wave1 extends Scene {
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
-  
+
         this.highscore = new highScoreLabel(970, 80);
         this.add(this.highscore);
 
@@ -117,12 +117,12 @@ export class Wave1 extends Scene {
         // adding actors
         this.makeActors()
     }
-    
+
     onActivate(engine) {
         super.onActivate();
 
         // Reset points to 0
-        engine.points = 0;
+        //engine.points = 0;
 
         this.reset = JSON.parse(localStorage.getItem('reset'));
         if (this.reset) {
@@ -141,21 +141,21 @@ export class Wave1 extends Scene {
     reset;
 
     startWave() {
-        if (this.wave > this.totalWaves) {
+        if (this.wave > 1) { //this.totalWaves
             console.log("WE ARE DONE");
             // Transition to Scene2
             this.engine.goToScene('wave2');
             return;
         }
-    
+
         console.log("Wave: " + this.wave);
         this.increaseEnemyWave += 1; // Je moet 5 enemies meer killen voordat nieuwe wave start
         this.enemiesLeftBeforeNewWave = this.increaseEnemyWave;
         this.spawnSpeed = this.spawnSpeed - 0.3; // Elke wave spawnen enemies 0.3 sneller
-    
+
         this.currentWaveLabel.setCurrentWave(this.wave);
     }
-    
+
 
     onPreUpdate(engine, delta) {
         this.spawnTimer += delta / 1000;
@@ -205,7 +205,7 @@ export class Wave1 extends Scene {
         this.enemiesLeftBeforeNewWave--;
         this.enemiesKilled++;
         console.log(this.enemiesKilled);
-        if (this.enemiesLeftBeforeNewWave === 0) {
+        if (this.enemiesKilled === 2) {
             this.wave++;
             this.startWave();
         }

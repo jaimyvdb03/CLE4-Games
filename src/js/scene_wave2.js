@@ -30,7 +30,7 @@ export class Wave2 extends Scene {
         this.totalWaves = "\u221E"; // Infinity symbol
     }
 
-    onInitialize(engine, gamepad) {
+    makeActors() {
         // Adding background
         const background = new Background2();
         this.add(background);
@@ -38,7 +38,7 @@ export class Wave2 extends Scene {
         this.Dpad = new Dpad_equip(30, 550)
         this.add(this.Dpad);
 
-        this.player = new Player(1260, 1800, gamepad);
+        this.player = new Player(1260, 1800);
         this.add(this.player);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
@@ -54,6 +54,7 @@ export class Wave2 extends Scene {
 
         this.scoreLabel = new ScoreLabel(1125, 20);
         this.add(this.scoreLabel);
+        this.scoreLabel.changeText(this.engine.points);
 
         this.highscore = new highScoreLabel(970, 80);
         this.add(this.highscore);
@@ -66,6 +67,43 @@ export class Wave2 extends Scene {
         this.add(leftCockroach);
 
         this.startWave();
+    }
+    onInitialize() {
+        // adding actors
+        this.makeActors()
+    }
+    onActivate(engine) {
+        super.onActivate();
+
+        // Reset points to 0
+        //engine.points = 0;
+
+        this.reset = JSON.parse(localStorage.getItem('reset2'));
+        if (this.reset) {
+            this.resetScene()
+        }
+    }
+
+    resetScene() {
+
+        this.reset = false
+        localStorage.removeItem('reset2');
+
+        // Verwijder alle actoren
+        this.actors.forEach(actor => {
+            actor.kill();
+        });
+
+        // Reset de variabelen
+        this.wave = 1;
+        this.enemiesLeftBeforeNewWave = 10;
+        this.increaseEnemyWave = 10;
+        this.spawnTimer = 0;
+        this.enemiesKilled = 0;
+        this.spawnSpeed = 3;
+        this.cockroachSpawnRate = 1;
+        // Voeg alle actoren opnieuw toe
+        this.makeActors()
     }
 
     wave = 1;

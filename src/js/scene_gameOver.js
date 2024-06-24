@@ -17,6 +17,8 @@ export class Game_over_Scene extends Scene {
                 // Transitie naar Level1Scene
                 let reset = true;
                 localStorage.setItem('reset', JSON.stringify(reset));
+                localStorage.setItem('reset2', JSON.stringify(reset));
+
                 this.engine.goToScene('wave1');
 
                 this.engine.points = 0
