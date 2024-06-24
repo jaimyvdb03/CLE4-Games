@@ -38,12 +38,12 @@ export class Wave2 extends Scene {
         this.Dpad = new Dpad_equip(30, 550)
         this.add(this.Dpad);
 
-        this.player = new Player(1260, 1000);
+        this.player = new Player(1260, 1730);
         this.add(this.player);
 
         this.camera.strategy.lockToActorAxis(this.player, Axis.X);
         this.camera.strategy.lockToActorAxis(this.player, Axis.Y);
-        const boundingBox = new BoundingBox(0, 0, 2780, 1870);
+        const boundingBox = new BoundingBox(0, 0, 2620, 1760);
         this.camera.strategy.limitCameraBounds(boundingBox);
 
         this.lifeDisplay = new Life(this.player);
@@ -59,11 +59,11 @@ export class Wave2 extends Scene {
         this.highscore = new highScoreLabel(970, 80);
         this.add(this.highscore);
 
-        let topCockroach = new Cockroach(this.wave, this.player, 1260, 30);
+        let topCockroach = new Cockroach(this.wave, this.player, 1260, 90);
         this.add(topCockroach);
-        let rightCockroach = new Cockroach(this.wave, this.player, 2590, 1420);
+        let rightCockroach = new Cockroach(this.wave, this.player, 2500, 1200);
         this.add(rightCockroach);
-        let leftCockroach = new Cockroach(this.wave, this.player, 20, 1440);
+        let leftCockroach = new Cockroach(this.wave, this.player, 250, 1000);
         this.add(leftCockroach);
 
         this.startWave();
@@ -144,23 +144,23 @@ export class Wave2 extends Scene {
     }
 
     spawnCockroach() {
-        let topCockroach = new Cockroach(this.wave, this.player, 1260, 30);
+        let topCockroach = new Cockroach(this.wave, this.player, 1260, 90);
         this.add(topCockroach);
 
         if (this.wave >= 2 && this.wave < 8) {
             const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
             if (spawnLocation === 'right') {
-                let randomCockroach = new Cockroach(this.wave, this.player, 2590, 1420);
+                let randomCockroach = new Cockroach(this.wave, this.player, 2500, 1200);
                 this.add(randomCockroach);
             } else {
-                let randomCockroach = new Cockroach(this.wave, this.player, 20, 1440);
+                let randomCockroach = new Cockroach(this.wave, this.player, 250, 1000);
                 this.add(randomCockroach);
             }
         }
         else if (this.wave >= 8) {
-            let rightCockroach = new Cockroach(this.wave, this.player, 2590, 1420);
+            let rightCockroach = new Cockroach(this.wave, this.player, 2500, 1200);
             this.add(rightCockroach);
-            let leftCockroach = new Cockroach(this.wave, this.player, 20, 1440);
+            let leftCockroach = new Cockroach(this.wave, this.player, 250, 1000);
             this.add(leftCockroach);
         }
     }
@@ -168,24 +168,24 @@ export class Wave2 extends Scene {
 
     spawnLich() {
         console.log("default lich")
-        let topLich = new Lich(this.wave, this.player, 1260, 30);
+        let topLich = new Lich(this.wave, this.player, 1260, 90);
         this.add(topLich);
 
         if (this.wave >= 6 && this.wave < 13) {
             console.log("left or right lich")
             const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
             if (spawnLocation === 'right') {
-                let randomLich = new Lich(this.wave, this.player, 2590, 1420);
+                let randomLich = new Lich(this.wave, this.player, 2500, 1200);
                 this.add(randomLich);
             } else {
-                let randomLich = new Lich(this.wave, this.player, 20, 1440);
+                let randomLich = new Lich(this.wave, this.player, 250, 1000);
                 this.add(randomLich);
             }
         }
         else if (this.wave >= 13) {
-            let rightLich = new Lich(this.wave, this.player, 2590, 1420);
+            let rightLich = new Lich(this.wave, this.player, 2500, 1200);
             this.add(rightLich);
-            let leftLich = new Lich(this.wave, this.player, 20, 1440);
+            let leftLich = new Lich(this.wave, this.player, 250, 1000);
             this.add(leftLich);
         }
     }
@@ -196,24 +196,24 @@ export class Wave2 extends Scene {
         if (this.wave > 10) {
             spawnX = 1260;
             spawnY = 30;
-            let topReaper = new Reaper(this.wave, this.player, 1260, 30);
+            let topReaper = new Reaper(this.wave, this.player, 1260, 90);
             this.add(topReaper);
         }
 
         if (this.wave >= 5 && this.wave < 10) {
             const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
             if (spawnLocation === 'right') {
-                let randomReaper = new Reaper(this.wave, this.player, 2590, 1420);
+                let randomReaper = new Reaper(this.wave, this.player, 2500, 1200);
                 this.add(randomReaper);
             } else {
-                let randomReaper = new Reaper(this.wave, this.player, 20, 1440);
+                let randomReaper = new Reaper(this.wave, this.player, 250, 1000);
                 this.add(randomReaper);
             }
         }
         else if (this.wave >= 10) {
-            let rightReaper = new Reaper(this.wave, this.player, 2590, 1420);
+            let rightReaper = new Reaper(this.wave, this.player, 2500, 1200);
             this.add(rightReaper);
-            let leftReaper = new Reaper(this.wave, this.player, 20, 1440);
+            let leftReaper = new Reaper(this.wave, this.player, 250, 1000);
             this.add(leftReaper);
         }
     }
@@ -248,8 +248,8 @@ export class Wave2 extends Scene {
     }
 
     spawnPowerUp(type) {
-        const spawnX = 690 + Math.random() * (2780 - 690);
-        const spawnY = 1220 + Math.random() * (1870 - 1220);
+        const spawnX = 660 + Math.random() * (1930 - 660);
+        const spawnY = 1040 + Math.random() * (1740 - 1040);
 
         if (type === 'health') {
             const lifeboost = new Lifeboost(spawnX, spawnY);
