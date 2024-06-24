@@ -134,10 +134,6 @@ export class Player extends Actor {
             if (engine.mygamepad.isButtonPressed(Buttons.Face1)) {
                 console.log('test');
             }
-            if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger)) {
-                console.log('phew pauw');
-            }
-
             // Switch weapons
             if (engine.mygamepad.isButtonPressed(Buttons.DpadDown)) {
                 this.switchWeapon(0);
