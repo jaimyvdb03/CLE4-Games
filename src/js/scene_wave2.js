@@ -134,7 +134,7 @@ export class Wave2 extends Scene {
             this.spawnPowerUp('health');
         }
 
-        if (this.enemiesKilled % 15 === 0) {
+        if (this.enemiesKilled % 7 === 0) {
             this.spawnPowerUp('speed');
         }
         if (this.enemiesKilled % 15 === 0) {
