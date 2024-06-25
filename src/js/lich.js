@@ -111,7 +111,7 @@ export class Lich extends Enemies {
             this.isAttacking = true;
 
             this.attackTimer = new Timer({
-                interval: 800,
+                interval: 500,
                 repeats: true,
                 fcn: () => {
                     this.attackPhase = (this.attackPhase + 1) % 5;
@@ -158,5 +158,23 @@ export class Lich extends Enemies {
             this.attackTimer.stop();
             this.attackTimerActive = false;
         }
+    }
+
+    kill() {
+        super.kill(); // Call parent method to remove from scene
+
+        // Clean up any associated projectiles
+        this.cleanUpProjectiles();
+    }
+
+    cleanUpProjectiles() {
+        // Implement logic to find and remove all projectiles associated with this Lich
+        const projectilesToRemove = this.engine.currentScene.actors.filter(actor => {
+            return actor instanceof LichProjectile && actor.parent === this;
+        });
+
+        projectilesToRemove.forEach(projectile => {
+            projectile.kill();
+        });
     }
 }

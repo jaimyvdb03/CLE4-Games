@@ -89,8 +89,10 @@ export class Wave2 extends Scene {
         this.reset = false
         localStorage.removeItem('reset2');
 
-        // Verwijder alle actoren
         this.actors.forEach(actor => {
+            if (actor instanceof Lich) {
+                actor.stopAttackTimer();
+            }
             actor.kill();
         });
 
@@ -106,7 +108,7 @@ export class Wave2 extends Scene {
         this.makeActors()
     }
 
-    wave = 1;
+    wave = 15;
     enemiesKilled = 0; // Track enemies killed
 
     cockroachSpawnTimer = 0;
@@ -163,6 +165,16 @@ export class Wave2 extends Scene {
             let leftCockroach = new Cockroach(this.wave, this.player, 250, 1000);
             this.add(leftCockroach);
         }
+        else if (this.wave >= 20) {
+            const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
+            if (spawnLocation === 'right') {
+                let randomCockroach = new Cockroach(this.wave, this.player, 2500, 1200);
+                this.add(randomCockroach);
+            } else {
+                let randomCockroach = new Cockroach(this.wave, this.player, 250, 1000);
+                this.add(randomCockroach);
+            }
+        }
     }
 
 
@@ -215,6 +227,16 @@ export class Wave2 extends Scene {
             this.add(rightReaper);
             let leftReaper = new Reaper(this.wave, this.player, 250, 1000);
             this.add(leftReaper);
+        }
+        else if (this.wave >= 15) {
+            const spawnLocation = Math.random() < 0.5 ? 'right' : 'left';
+            if (spawnLocation === 'right') {
+                let randomReaper = new Reaper(this.wave, this.player, 2500, 1200);
+                this.add(randomReaper);
+            } else {
+                let randomReaper = new Reaper(this.wave, this.player, 250, 1000);
+                this.add(randomReaper);
+            }
         }
     }
 
