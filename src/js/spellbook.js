@@ -36,6 +36,11 @@ export class Spellbook extends Actor {
         let rightStickY = engine.mygamepad.getAxes(Axes.RightStickY)
         let directionVector = new Vector(rightStickX, rightStickY).normalize();
 
+        if (engine.mygamepad.isButtonPressed(Buttons.RightTrigger) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
+            this.lastShotTime = this.currentTime
+            this.shoot(engine, directionVector)
+        }
+
         if (engine.mygamepad.isButtonPressed(Buttons.LeftTrigger) && (this.currentTime - this.lastShotTime >= this.shootCooldown)) {
             this.lastShotTime = this.currentTime
             this.shoot(engine, directionVector)
