@@ -108,7 +108,7 @@ export class Wave2 extends Scene {
         this.makeActors()
     }
 
-    wave = 15;
+    wave = 1;
     enemiesKilled = 0; // Track enemies killed
 
     cockroachSpawnTimer = 0;

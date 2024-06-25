@@ -31,7 +31,7 @@ export class Game_over_Scene extends Scene {
                 localStorage.setItem('reset', JSON.stringify(reset));
                 localStorage.setItem('reset2', JSON.stringify(reset));
 
-                this.engine.goToScene('wave2'); // Use this.engine
+                this.engine.goToScene('wave1'); // Use this.engine
                 this.remove(this.scoreLabel);
                 this.engine.points = 0
             }
